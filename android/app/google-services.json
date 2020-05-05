@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "459951819490",
+    "firebase_url": "https://dream-43bb8.firebaseio.com",
+    "project_id": "dream-43bb8",
+    "storage_bucket": "dream-43bb8.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:459951819490:android:875c9b9a7df0a7855b2cbb",
+        "android_client_info": {
+          "package_name": "com.abdulazizahmed.dream"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "459951819490-iu0b26rmrogvkog7nk4s76c26k4sn0t0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.abdulazizahmed.dream",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "459951819490-vgj7f9md5005j4t73mkrtkuf5ncamg9r.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBh_6ZdeAieM8-27vtPVQdajF_-z_ynmK4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "459951819490-vgj7f9md5005j4t73mkrtkuf5ncamg9r.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

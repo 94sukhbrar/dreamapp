@@ -1,0 +1,1 @@
+exports.PLATFORM_MONEY_PERCENTAGE = 0.3;

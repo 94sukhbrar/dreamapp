@@ -1,0 +1,2 @@
+export const BACKGROUND = 'BACKGROUND';
+export const FOREGROUND = 'FOREGROUND';
