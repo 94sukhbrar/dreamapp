@@ -115,41 +115,33 @@ exports.notifyUser = async (uid, notificationBody) => {
   let {deviceToken, deviceOS, language} = await getUserToken(uid);
   language = language || 'en';
 
-  if (deviceOS === 'IOS') {
-    //TODO send a post request to APNS.
-  } else if (deviceOS === 'ANDROID') {
-    admin.messaging().send({
-      token: deviceToken,
+  admin.messaging().send({
+    token: deviceToken,
+    notification: {
+      title: 'Dream',
+      body: notificationBody,
+    },
+    android: {
       notification: {
-        title: 'Dream',
-        body: notificationBody,
+        sound: 'default',
+        vibrateTimingsMillis: [0, 90, 100, 90],
+        priority: 'max',
       },
-      android: {
-        notification: {
-          sound: 'default',
-          vibrateTimingsMillis: [0, 90, 100, 90],
-          priority: 'max',
-        },
-      },
-    });
-  }
+    },
+  });
 };
 
 exports.sendMessage = async (uid, data) => {
   let {deviceToken, deviceOS, language} = await getUserToken(uid);
   language = language || 'en';
 
-  if (deviceOS === 'IOS') {
-    //TODO send a post request to APNS.
-  } else if (deviceOS === 'ANDROID') {
-    admin.messaging().send({
-      token: deviceToken,
-      data: {...data, language},
-      android: {
-        priority: 'high',
-      },
-    });
-  }
+  admin.messaging().send({
+    token: deviceToken,
+    data: {...data, language},
+    android: {
+      priority: 'high',
+    },
+  });
 };
 
 exports.updateConsultantRating = async (uid, rating, numberOfRates) => {

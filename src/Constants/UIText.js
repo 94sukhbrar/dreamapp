@@ -200,7 +200,7 @@ const UIText = {
     blankPasswordConfirmation: 'تأكيد كلمة المرور لا يمكن أن يُترك فارغًا',
     noUserMessage: 'البريد الإلكتروني أو كلمة المرور غير صحيحين',
     emailAlreadyExists: 'البريد الإلكتروني مُسجل بالفعل لحساب آخر',
-    selectConsultant: 'اختر مُفسر للرؤى واحجز موعد',
+    selectConsultant: 'اختر مستشارًا واحجز موعد',
     call: 'مكالمة',
     selectDate: 'اختر تاريخًا',
     selectTime: 'اختر توقيتًا',

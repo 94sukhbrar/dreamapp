@@ -58,7 +58,7 @@ buck-out/
 # CocoaPods
 /ios/Pods/
 
-#dead code
+# Dead code
 RecycleBin/
 
 Android/java_pid35129.hprof
