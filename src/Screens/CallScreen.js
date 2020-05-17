@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useRef} from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import {
   StyleSheet,
   View,
@@ -11,14 +11,15 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import PropTypes from 'prop-types';
-import {shallowEqual, useSelector, useDispatch} from 'react-redux';
+import { shallowEqual, useSelector, useDispatch } from 'react-redux';
 import RoundImage from '../Components/RoundImage';
-import {ACTIVE, WAITING_PEER, INCOMING} from '../Constants/CallStatus';
-import {LARGE, SMALL} from '../Constants/CallBtnSizes';
+import { ACTIVE, WAITING_PEER, INCOMING } from '../Constants/CallStatus';
+import { LARGE, SMALL } from '../Constants/CallBtnSizes';
 import Layout from '../Constants/Layout';
 import CallBtn from '../Components/CallBtn';
-import {DECLINE, MUTE, SPEAKER} from '../Constants/CallBtnTypes';
-import {twoDigits, filterOutNonNumberCharacters} from '../Utilities/Tools';
+import { DECLINE, MUTE, SPEAKER } from '../Constants/CallBtnTypes';
+import { twoDigits, filterOutNonNumberCharacters } from '../Utilities/Tools';
+import { reportProblem } from '../Utilities/ErrorHandlers';
 import {RtcEngine} from 'react-native-agora';
 import AgoraConfig from '../Configs/AgoraConfig';
 import { getAudioPermissions } from '../Utilities/Permissions';

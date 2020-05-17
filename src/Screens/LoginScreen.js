@@ -28,8 +28,7 @@ import useMessageDisplayer from '../Hooks/useMessageDisplayer';
 import NavigationHeader from '../Components/NavigationHeader';
 import ResetPasswordPopup from '../Components/ResetPasswordPopup';
 import useNotificationRegisterer from '../Hooks/useNotificationRegisterer';
-import firestore from '@react-native-firebase/firestore';
-import { reportProblem } from '../Utilities/Tools';
+import { reportProblem } from '../Utilities/ErrorHandlers';
 
 const topMargin = 35;
 const keyboardYTranslation = Layout.authScreensDreamLogoContainerAbsoluteHeight - topMargin;

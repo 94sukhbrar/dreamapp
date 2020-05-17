@@ -29,7 +29,8 @@ import {
   fetchAppointments,
   setUpcomingAppointmentDates,
 } from '../Redux/Actions';
-import { areArraysEqual, getUpcomingAppointmentDates, reportProblem } from '../Utilities/Tools';
+import { areArraysEqual, getUpcomingAppointmentDates } from '../Utilities/Tools';
+import { reportProblem } from '../Utilities/ErrorHandlers';
 import SegmentedControl from '@react-native-community/segmented-control';
 import AppointmentsContainer from '../Components/AppointmentsContainer';
 import DismissibleModal from '../Components/DismissibleModal';

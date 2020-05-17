@@ -25,7 +25,7 @@ import { setStripeCustomerId, fetchAppointments } from '../Redux/Actions';
 import DismissibleModal from '../Components/DismissibleModal';
 import CustomIcon from '../Components/CustomIcon';
 import CheckBox from '../Components/CheckBox';
-import { reportProblem } from '../Utilities/Tools';
+import { reportProblem } from '../Utilities/ErrorHandlers';
 import TermsAndPrivacyModal from '../Components/TermsAndPrivacyModal';
 
 const PaymentScreen = ({ route, navigation }) => {

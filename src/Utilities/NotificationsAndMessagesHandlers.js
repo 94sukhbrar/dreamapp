@@ -8,7 +8,7 @@ import localNotificationDefaultConfig from '../Constants/LocalNotificationDefaul
 import PushNotification from 'react-native-push-notification';
 import UIText from '../Constants/UIText';
 import { setShowCallScreen, setCurrentCallData } from '../Redux/Actions';
-import { reportProblem } from './Tools';
+import { reportProblem } from './ErrorHandlers';
 
 
 export const handleFcmMessage = (message, appState, dispatch=null) => {

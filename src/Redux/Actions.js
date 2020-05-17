@@ -23,7 +23,8 @@ import {
   SET_DEVICE_LANGUAGE,
 } from './ActionTypes';
 import { fetchActiveConsultants, fetchUserAppointments } from '../Networking/Firestore';
-import { reportProblem, extractDocDataAndIdsAsObjectFromCollectionSnap } from '../Utilities/Tools';
+import { extractDocDataAndIdsAsObjectFromCollectionSnap } from '../Utilities/Tools';
+import { reportProblem } from '../Utilities/ErrorHandlers';
 
 export const setLanguage = language => ({
   type: SET_LANGUAGE,

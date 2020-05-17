@@ -20,6 +20,7 @@ const CustomKeyboardAvoidingView = props => {
     avoidingIsActive,
     translationDeterminedByOffset,
     bottomOffset,
+    reportKeyboardState,
   } = props;
 
   const [ animatedYTranslation ] = useState(new Animated.Value(0));
@@ -74,6 +75,7 @@ const CustomKeyboardAvoidingView = props => {
   }
 
   const keyboardShown = event => {
+    reportKeyboardState && reportKeyboardState(true);
     const keyboardHeight = event.endCoordinates.height;
     const animationDuration = 350;
     if (translationDeterminedByOffset) {
@@ -97,7 +99,8 @@ const CustomKeyboardAvoidingView = props => {
 		});
 	}
 
-  const keyboardHidden = event => {
+  const keyboardHidden = () => {
+    reportKeyboardState && reportKeyboardState(false);
     const animationDuration = 350;
     animate(animatedYTranslation, 0, animationDuration).start();
   }
@@ -117,6 +120,7 @@ CustomKeyboardAvoidingView.propTypes = {
   bottomOffset: PropTypes.number,
   avoidingIsActive: PropTypes.bool,
   children: PropTypes.oneOfType([PropTypes.array, PropTypes.element]),
+  reportKeyboardState: PropTypes.func,
 }
 
 CustomKeyboardAvoidingView.defaultProps = {

@@ -2,10 +2,7 @@ import {Platform, NativeModules} from 'react-native';
 import { ACCEPTED } from '../Constants/AppointmentStatusTypes';
 import { getReadableDateTime, isAppointmentInThePast, minifyAppointmentDate } from './DateAndTimeTools';
 import { USER } from '../Constants/UserTypes';
-
-
-// fileName is used to report errors and warnings
-const fileName = 'Tools';
+import { reportProblem } from '../Utilities/ErrorHandlers';
 
 export const isStringPercentage = percentage => typeof percentage == 'string' && percentage.includes('%');
 
@@ -38,19 +35,13 @@ export const computePercentageRemainder = percentage => {
     percentageFraction = percentage;
 
   else {
-    reportWarning({
-      message: `wrong percentage value. expected a string including % or number between 0 and 100. received: ${percentage}`,
-      functionName: 'computePercentageRemainder',
-      fileName,
-    });
+    const errorMessage = 
+      `wrong percentage value. expected a string including % or number between 0 and 100. received: ${percentage}`;
+    reportProblem(errorMessage);
     return 0;
   }
   
   return 100 - percentageFraction;
-}
-
-export const reportWarning = ({message, functionName, fileName}) => {
-  console.warn(`${message}\nfunctionName:${functionName}\nfileName:${fileName}`);
 }
 
 export const escapeSpecialRegexCharacters = string => string.replace(/[.*+\-?^${}()|[\]\\]/g, '\\$&');
@@ -105,11 +96,6 @@ export const convertPhotoToBlob = async photoUri => {
   const response = await fetch(photoUri);
   const blob = await response.blob();
   return blob;
-};
-
-export const reportProblem = message => {
-  // report the problem to sentry
-  console.warn(message);
 };
 
 export const logData = state => {

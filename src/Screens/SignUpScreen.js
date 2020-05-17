@@ -29,7 +29,7 @@ import useMessageDisplayer from '../Hooks/useMessageDisplayer';
 import { uploadUserData, updateUserPrivateData, getToBeUploadedUserData, checkAdministration } from '../Networking/Firestore';
 import NavigationHeader from '../Components/NavigationHeader';
 import useNotificationRegisterer from '../Hooks/useNotificationRegisterer';
-import { reportProblem } from '../Utilities/Tools';
+import { reportProblem } from '../Utilities/ErrorHandlers';
 
 
 const topMargin = 35;
@@ -47,6 +47,7 @@ const SignUpScreen = ({ navigation }) => {
   const [passwordErrorMessage, setPasswordErrorMessage] = useState(false);
   const [confirmPasswordErrorMessage, setConfirmPasswordErrorMessage] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [keyboardShown, setKeyboardShown] = useState(false);
 
   const registerForPushNotifications = useNotificationRegisterer();
   const [ messageDisplayer, displayMessage ] = useMessageDisplayer();
@@ -204,8 +205,19 @@ const SignUpScreen = ({ navigation }) => {
 
       { messageDisplayer }
 
-      <CustomKeyboardAvoidingView style={styles.container} YTranslation={keyboardYTranslation} >
-        <NavigationHeader title='' navigation={navigation} navigateBackTo={'Main'} absolute roundBtn language={language}/>
+      <CustomKeyboardAvoidingView
+        style={styles.container}
+        YTranslation={keyboardYTranslation}
+        reportKeyboardState={state => setKeyboardShown(state)}>
+        <NavigationHeader
+          title=""
+          navigation={navigation}
+          navigateBackTo={'Main'}
+          absolute
+          roundBtn
+          language={language}
+        />
+
         <View style={{width: '100%', alignItems: 'center'}}>
               <AuthImageBackground>
                   <View style={styles.logoContainer}>
@@ -274,15 +286,17 @@ const SignUpScreen = ({ navigation }) => {
 
           <LoginAndSignUpBtn text={UIText[language].signUp} onPress={onPressSignUp} loading={loading} />
 
-        <View style={styles.changeAuthMethodBtnContainer}>
-          <Text style={{fontSize: 14}}>{UIText[language].haveAccount}</Text>
+        {!keyboardShown && (
+          <View style={styles.changeAuthMethodBtnContainer}>
+            <Text style={{fontSize: 14}}>{UIText[language].haveAccount}</Text>
 
-          <TouchableOpacity onPress={navigateToLoginScreen}>
-            <Text style={styles.changeAuthMethodBtnText}>
-              {UIText[language].login.toUpperCase()}
-            </Text>
-          </TouchableOpacity>
-        </View>
+              <TouchableOpacity onPress={navigateToLoginScreen}>
+                <Text style={styles.changeAuthMethodBtnText}>
+                  {UIText[language].login.toUpperCase()}
+                </Text>
+              </TouchableOpacity>
+          </View>
+        )}
       </CustomKeyboardAvoidingView>
     </KeyboardDismissor>
   );

@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { generateId, reportProblem } from '../Utilities/Tools';
+import { generateId } from '../Utilities/Tools';
+import { reportProblem } from '../Utilities/ErrorHandlers';
 import { REQUESTED } from '../Constants/AppointmentStatusTypes';
 import { uploadAppointment } from '../Networking/Firestore';
 
