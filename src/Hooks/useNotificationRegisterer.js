@@ -1,12 +1,14 @@
-import { requestIosNotificationPermission } from '../Utilities/Permissions';
-import { Platform } from 'react-native';
+import { Platform, Alert } from 'react-native';
 import { useSelector, useDispatch } from 'react-redux';
 import { updateUserPrivateData } from '../Networking/Firestore';
 import { setUserData } from '../Redux/Actions';
 import { IOS, ANDROID } from '../Constants/DeviceOsTypes';
-import PushNotificationIOS from "@react-native-community/push-notification-ios";
 import PushNotification from 'react-native-push-notification';
 import messaging from '@react-native-firebase/messaging';
+import { handleFcmMessage } from '../Utilities/NotificationsAndMessagesHandlers';
+import { FOREGROUND } from '../Constants/AppStates';
+import { isTimeStampOlderThanEightMinutes } from '../Utilities/DateAndTimeTools';
+import UIText from '../Constants/UIText';
 
 const isIos = Platform.OS === 'ios';
 const currentDeviceOS = isIos ? IOS : ANDROID;
@@ -19,6 +21,7 @@ const useNotificationRegisterer = () => {
   const register = async uid => {
 		PushNotification.configure({
 			popInitialNotification: true,
+			onNotification: onReceiveNotificationOnIos,
 		});
 
 		try {
@@ -40,7 +43,30 @@ const useNotificationRegisterer = () => {
 		dispatch(setUserData(updatedUserData));
 	};
 
+	const onReceiveNotificationOnIos = notification => {
+		const message = {data: notification};
+		if (!isIos) return;
+
+		const {
+			timestamp: messageTimeStamp,
+			name: peerName,
+		} = message.data;
+
+		if (!isTimeStampOlderThanEightMinutes(messageTimeStamp))
+			handleFcmMessage(message, FOREGROUND, dispatch);
+		else
+			showMissedConsultationAlert(peerName);
+	};
+
+	const showMissedConsultationAlert = peerName => {
+    Alert.alert(
+			UIText[language].missedConsultation,
+      UIText[language].missedConsultationNotification(peerName),
+      [{text: UIText[language].ok}]
+    );
+  };
+
 	return register;
-}
+};
 
 export default useNotificationRegisterer;

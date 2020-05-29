@@ -14,10 +14,7 @@ import { FOREGROUND } from '../Constants/AppStates';
 import PushNotification from 'react-native-push-notification';
 import localNotificationDefaultConfig from '../Constants/LocalNotificationDefaultConfig';
 import UIText from '../Constants/UIText';
-import { Platform } from 'react-native';
 import { useNetInfo } from "@react-native-community/netinfo";
-
-const isIos = Platform.OS === 'ios';
 
 const useInitializer = () => {
   const { state, loggedIn, keepLoggedIn, language, languageIsSetManually, uid } = useSelector(

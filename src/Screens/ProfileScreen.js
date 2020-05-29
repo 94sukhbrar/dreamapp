@@ -27,6 +27,7 @@ import {request, PERMISSIONS} from 'react-native-permissions';
 import { updateUserEmail, loginUserIn } from '../Networking/Authentication';
 import ReEnterPasswordPopup from '../Components/ReEnterPasswordPopup';
 import RegexPatterns from '../Constants/RegexPatterns';
+import { getIosCameraAndPhotoLibraryPermissions } from '../Utilities/Permissions';
 
 const imagePickerOptions = {
   storageOptions: {
@@ -65,13 +66,14 @@ const ProfileScreen = ({ navigation }) => {
   const [unAppliedEmail, setUnAppliedEmail] = useState('');
   const [messageDisplayer, displayMessage] = useMessageDisplayer();
 
-  useEffect(() => {
-    // request(PERMISSIONS.IOS.PHOTO_LIBRARY).then(result => {
-    //   // …
-    // });
-  }, []);
-
   const showImagePicker = async() => {
+    const {
+      cameraPermissionGranted,
+      photoLibraryPermissionGranted,
+    } = await getIosCameraAndPhotoLibraryPermissions();
+
+    if (!cameraPermissionGranted && !photoLibraryPermissionGranted) return;
+
     ImagePicker.showImagePicker({...imagePickerOptions, title: UIText[language].selectAvatar}, async response => {
       if (response.didCancel || response.error) return;
 

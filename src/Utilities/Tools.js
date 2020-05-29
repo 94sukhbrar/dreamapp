@@ -107,7 +107,7 @@ export const logData = state => {
   for (key in state)
     console.log(`${key}: ${state[key]}`);
 
-  console.log(`---------------`);
+  console.log(`---------------\n`);
 };
 
 export const generateRandomSequenceOfCharacters = length => {

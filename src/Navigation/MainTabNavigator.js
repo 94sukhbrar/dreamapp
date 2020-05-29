@@ -70,7 +70,7 @@ const MainTabNavigator = () => {
         />
       )}
 
-      {isAdmin && !__DEV__ && (
+      {isAdmin && (
         <Tab.Screen
           name="Dashboard"
           component={DashboardScreen}

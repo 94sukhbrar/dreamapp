@@ -45,7 +45,6 @@ const PaymentScreen = ({ route, navigation }) => {
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [userAgrees, setUserAgrees] = useState(true);
   const [showTermsAndPrivacyModal, setShowTermsAndPrivacyModal] = useState(false);
-  const [showTermsOrPrivacy, setShowTermsOrPrivacy] = useState('terms');
 
   const [schedule, loading] = useAppointmentScheduler(name, uid);
   const [messageDisplayer, displayMessage] = useMessageDisplayer();
@@ -117,12 +116,6 @@ const PaymentScreen = ({ route, navigation }) => {
 
   const showPrivacyPolicy = () => {
     setShowTermsAndPrivacyModal(true);
-    setShowTermsOrPrivacy('privacy');
-  };
-
-  const showTermsAndService = () => {
-    setShowTermsAndPrivacyModal(true);
-    setShowTermsOrPrivacy('terms');
   };
 
   return (
@@ -186,7 +179,7 @@ const PaymentScreen = ({ route, navigation }) => {
       <TermsAndPrivacyModal
         visible={showTermsAndPrivacyModal}
         requestClose={() => setShowTermsAndPrivacyModal(false)}
-        showTermsOrPrivacy={showTermsOrPrivacy}
+        showTermsOrPrivacy={'privacy'}
       />
 
       <DismissibleModal

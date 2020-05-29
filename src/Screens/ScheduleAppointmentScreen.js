@@ -38,6 +38,9 @@ import {IONICONS} from '../Constants/IconFamilies';
 import { fetchConsultants } from '../Redux/Actions';
 import CustomIcon from '../Components/CustomIcon';
 import DismissibleModal from '../Components/DismissibleModal';
+import localNotificationDefaultConfig from '../Constants/LocalNotificationDefaultConfig';
+import PushNotification from 'react-native-push-notification';
+
 
 const isIos = Platform.OS === 'ios';
 
@@ -568,4 +571,3 @@ ScheduleAppointmentScreen.propTypes = {
 }
 
 export default ScheduleAppointmentScreen;
-

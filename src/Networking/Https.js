@@ -47,7 +47,7 @@ export const sendChannelInvitation = async (
  * by the (consultation price - platform's percentage).
  * @param {string} userId The uid of the user to be charged.
  * @param {string} appointmentId The ID of the appointment that's to be accepted.
- * @param {string} consultantId The ID of the consultant to whom the money belongs,
+ * @param {string} consultantId The ID of the consultant to whom the money belongs.
  */
 export const chargeConsultationPrice = (appointmentId, userId, consultantId) => {
   const data = { appointmentId, userId, consultantId };

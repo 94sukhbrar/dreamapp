@@ -135,13 +135,42 @@ exports.sendMessage = async (uid, data) => {
   let {deviceToken, deviceOS, language} = await getUserToken(uid);
   language = language || 'en';
 
-  admin.messaging().send({
-    token: deviceToken,
-    data: {...data, language},
-    android: {
-      priority: 'high',
-    },
-  });
+  const {name: peerName} = data;
+  const notificationBody =
+    language === 'en'
+      ? `Your Dream Consultation With ${peerName} has started. Tab to join the call.`
+      : `استشارتك مع ${peerName} قد بدأت. اضغط لتبدأ المكالمة`;
+
+  // If the device is an ios device send the notification directly because
+  // the background message handler doesn't work on ios when the app is quit.
+  // Else (if the device is android) send a silent data-only notification so that upon
+  // receipt the app will check its time stamp to check if it's older than eight minutes or not
+  // to decide whether to trigger a local notification saying the consultation has started or missed
+
+  if (deviceOS === 'IOS') {
+    admin.messaging().sendToDevice(
+      [deviceToken],
+      {
+        notification: {
+          title: 'Dream',
+          body: notificationBody,
+        },
+        data: {...data, language},
+      },
+      {
+        contentAvailable: true,
+        priority: 'high',
+      },
+    );
+  } else {
+    admin.messaging().send({
+      token: deviceToken,
+      data: {...data, language},
+      android: {
+        priority: 'high',
+      },
+    });
+  }
 };
 
 exports.updateConsultantRating = async (uid, rating, numberOfRates) => {

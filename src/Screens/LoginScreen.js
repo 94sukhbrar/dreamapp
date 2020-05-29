@@ -72,8 +72,7 @@ const LoginScreen = ({ navigation }) => {
     try {
       ({ user } = await loginUserIn(email, password));
       if (!user) throw new Error('User is undefined');
-    }
-    catch (error) {
+    } catch (error) {
       handleLoginError(error);
       setLoading(false);
       return;
@@ -84,8 +83,7 @@ const LoginScreen = ({ navigation }) => {
     let userDoc;
     try {
       userDoc = await fetchUserData(uid);
-    }
-    catch (error) {
+    } catch (error) {
       reportProblem(error);
       displayMessage(UIText[language].noUserMessage);
       setLoading(false);
@@ -182,7 +180,10 @@ const LoginScreen = ({ navigation }) => {
 
       { messageDisplayer }
 
-      <CustomKeyboardAvoidingView style={styles.container} YTranslation={keyboardYTranslation} avoidingIsActive={!showResetPasswordPopup} >
+      <CustomKeyboardAvoidingView
+        style={styles.container}
+        YTranslation={keyboardYTranslation}
+        avoidingIsActive={!showResetPasswordPopup}>
         <NavigationHeader
           title=''
           navigation={navigation}
@@ -251,7 +252,7 @@ const LoginScreen = ({ navigation }) => {
         </View>
       </CustomKeyboardAvoidingView>
 
-      { showResetPasswordPopup && (
+      {showResetPasswordPopup && (
         <ResetPasswordPopup
           language={language}
           visible={showResetPasswordPopup}

@@ -9,7 +9,9 @@ import PushNotification from 'react-native-push-notification';
 import UIText from '../Constants/UIText';
 import { setShowCallScreen, setCurrentCallData } from '../Redux/Actions';
 import { reportProblem } from './ErrorHandlers';
+import { Platform } from 'react-native';
 
+const isIos = Platform.OS === 'ios';
 
 export const handleFcmMessage = (message, appState, dispatch=null) => {
   switch (message.data.messageType) {
@@ -21,7 +23,8 @@ export const handleFcmMessage = (message, appState, dispatch=null) => {
 
 
 const handleChannelInvitationMessage = async (message, appState, dispatch) => {
-  console.log("handleChannelInvitationMessage -> message", message);
+  __DEV__ && console.log("handleChannelInvitationMessage -> message", message);
+
   try {
     const {
       timestamp: messageTimeStamp,
@@ -80,6 +83,8 @@ const handleChannelInvitationMessage = async (message, appState, dispatch) => {
 
 
 const triggerLocalNotification = message => {
+  if (isIos) return;
+
   PushNotification.localNotification({
     ...localNotificationDefaultConfig,
     message,

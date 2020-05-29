@@ -3,7 +3,6 @@ import {
   StyleSheet,
   View,
   Text,
-  Alert,
   StatusBar,
   Platform,
 } from 'react-native';
@@ -36,17 +35,6 @@ const SettingsScreen = ({ navigation }) => {
   const [showLogoutPopup, setShowLogoutPopup] = useState(false);
 
   const logout = useLogout();
-
-  const showLogoutAlert = () => {
-    Alert.alert(  
-      UIText[language].confirmLogout,
-      '',
-      [
-        {text: UIText[language].cancel,},
-        {text: UIText[language].logout, onPress: () => onPressLogout()},
-      ]
-    );
-  }
   
   const onPressLogout = async() => {
     setShowLogoutPopup(false);
