@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react';
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, {useEffect, useState} from 'react';
 import {
   StyleSheet,
   View,
@@ -8,13 +9,17 @@ import {
   RefreshControl,
 } from 'react-native';
 import PropTypes from 'prop-types';
-import { shallowEqual, useSelector, useDispatch } from 'react-redux';
+import {shallowEqual, useSelector, useDispatch} from 'react-redux';
 import Colors from '../Constants/Colors';
-import { USER } from '../Constants/UserTypes';
+import {USER} from '../Constants/UserTypes';
 import Header from '../Components/Header';
 import UIText from '../Constants/UIText';
-import { OUTGOING } from '../Constants/CallDirections';
-import { updateAppointmentStatus, updateUserData, deleteAppointment } from '../Networking/Firestore';
+import {OUTGOING} from '../Constants/CallDirections';
+import {
+  updateAppointmentStatus,
+  updateUserData,
+  deleteAppointment,
+} from '../Networking/Firestore';
 import {
   REQUESTED,
   ACCEPTED,
@@ -29,16 +34,16 @@ import {
   fetchAppointments,
   setUpcomingAppointmentDates,
 } from '../Redux/Actions';
-import { areArraysEqual, getUpcomingAppointmentDates } from '../Utilities/Tools';
-import { reportProblem } from '../Utilities/ErrorHandlers';
+import {areArraysEqual, getUpcomingAppointmentDates} from '../Utilities/Tools';
+import {reportProblem} from '../Utilities/ErrorHandlers';
 import SegmentedControl from '@react-native-community/segmented-control';
 import AppointmentsContainer from '../Components/AppointmentsContainer';
 import DismissibleModal from '../Components/DismissibleModal';
 import CustomIcon from '../Components/CustomIcon';
-import { IONICONS } from '../Constants/IconFamilies';
-import { chargeConsultationPrice } from '../Networking/Https';
+import {IONICONS} from '../Constants/IconFamilies';
+import {chargeConsultationPrice} from '../Networking/Https';
 import useMessageDisplayer from '../Hooks/useMessageDisplayer';
-import { WAITING_PEER } from '../Constants/CallStatus';
+import {WAITING_PEER} from '../Constants/CallStatus';
 
 const scrollViewVerticalPadding = 20;
 
@@ -54,7 +59,7 @@ const scrollViewHeight =
 
 const segmentedControlStatusValues = [REQUESTED, ACCEPTED, COMPLETED];
 
-const MyAppointmentsScreen = ({ navigation }) => {
+const MyAppointmentsScreen = ({navigation}) => {
   const {
     uid,
     photoUrl,
@@ -89,31 +94,44 @@ const MyAppointmentsScreen = ({ navigation }) => {
   const [showChargingModal, setShowChargingModal] = useState(false);
   const [charging, setCharging] = useState(false);
   const [chargeModalLabel, setChargeModalLabel] = useState('');
-  const [chargeModalLabelColor, setChargeModalLabelColor] = useState(Colors.tintColor);
-  
+  const [chargeModalLabelColor, setChargeModalLabelColor] = useState(
+    Colors.tintColor,
+  );
+
   const [messageDisplayer, displayMessage] = useMessageDisplayer();
 
   useEffect(() => {
-    if (!loggedIn) return;
+    if (!loggedIn) {
+      return;
+    }
     dispatch(fetchAppointments(userType, uid));
-  }, [loggedIn]);
+  }, [dispatch, loggedIn, uid, userType]);
 
   useEffect(() => {
-    if (Object.keys(appointments).length === 0) return;
+    if (Object.keys(appointments).length === 0) {
+      return;
+    }
     try {
       removeDeclinedAppointments();
       updateAppointmentsInUserDoc();
     } catch (error) {
       reportProblem(error);
     }
-  }, [appointments]);
+  }, [appointments, removeDeclinedAppointments, updateAppointmentsInUserDoc]);
 
   const updateAppointmentsInUserDoc = () => {
-    const updatedUpcomingAppointmentDates = getUpcomingAppointmentDates(appointments, userType);
+    const updatedUpcomingAppointmentDates = getUpcomingAppointmentDates(
+      appointments,
+      userType,
+    );
 
-    if (!areArraysEqual(updatedUpcomingAppointmentDates, upcomingAppointmentDates)) {
+    if (
+      !areArraysEqual(updatedUpcomingAppointmentDates, upcomingAppointmentDates)
+    ) {
       dispatch(setUpcomingAppointmentDates(updatedUpcomingAppointmentDates));
-      updateUserData(uid, {upcomingAppointmentDates: updatedUpcomingAppointmentDates});
+      updateUserData(uid, {
+        upcomingAppointmentDates: updatedUpcomingAppointmentDates,
+      });
     }
   };
 
@@ -124,19 +142,20 @@ const MyAppointmentsScreen = ({ navigation }) => {
     for (const appointmentId in updatedAppointments) {
       const appointment = updatedAppointments[appointmentId];
 
-      if (
-        appointment.status === DECLINED
-      ) {
+      if (appointment.status === DECLINED) {
         delete updatedAppointments[appointmentId];
         try {
           deleteAppointment(appointmentId);
-        } catch (error) {/*It may have been deleted by the other party first*/}
+        } catch (error) {
+          /*It may have been deleted by the other party first*/
+        }
         appointmentsObjectIsModified = true;
       }
     }
 
-    if (appointmentsObjectIsModified)
+    if (appointmentsObjectIsModified) {
       dispatch(setAppointments(updatedAppointments));
+    }
   };
 
   const startAppointment = async appointmentId => {
@@ -145,30 +164,36 @@ const MyAppointmentsScreen = ({ navigation }) => {
       return;
     }
 
-    const { parties } = appointments[appointmentId];
+    const {parties} = appointments[appointmentId];
 
-    const peerUid = userType == USER ? parties.consultant.uid : parties.user.uid;
-    const peerName = userType == USER ? parties.consultant.name : parties.user.name;
+    const peerUid =
+      userType == USER ? parties.consultant.uid : parties.user.uid;
+    const peerName =
+      userType == USER ? parties.consultant.name : parties.user.name;
 
-    dispatch(setCurrentCallData({
-      appointmentId,
-      uid: peerUid,
-      name: peerName,
-      photoUrl: null,
-      direction: OUTGOING,
-      callStatus: WAITING_PEER,
-    }));
+    dispatch(
+      setCurrentCallData({
+        appointmentId,
+        uid: peerUid,
+        name: peerName,
+        photoUrl: null,
+        direction: OUTGOING,
+        callStatus: WAITING_PEER,
+      }),
+    );
 
     dispatch(setShowCallScreen(true));
   };
 
-  const respondToAppointment = (appointmentId, accepted, charged=false) => {
+  const respondToAppointment = (appointmentId, accepted, charged = false) => {
     if (!isConnectedToInternet) {
       displayMessage(UIText[language].checkInternetConnectionAndTry());
       return;
     }
 
-    if (charging) return;
+    if (charging) {
+      return;
+    }
 
     const appointment = appointments[appointmentId];
     const status = accepted ? ACCEPTED : DECLINED;
@@ -176,7 +201,9 @@ const MyAppointmentsScreen = ({ navigation }) => {
     if (accepted && !charged) {
       setSelectedAppointmentId(appointmentId);
       const consultationPrice = appointments[appointmentId].price;
-      setChargeModalLabel(UIText[language].chargeConsultationPrice(consultationPrice));
+      setChargeModalLabel(
+        UIText[language].chargeConsultationPrice(consultationPrice),
+      );
       setChargeModalLabelColor(Colors.tintColor);
       setShowChargingModal(true);
       return;
@@ -196,25 +223,33 @@ const MyAppointmentsScreen = ({ navigation }) => {
   const onPressCharge = async () => {
     setCharging(true);
 
-    const { parties: { user, consultant } } = appointments[selectedAppointmentId];
-
+    const {
+      parties: {user, consultant},
+    } = appointments[selectedAppointmentId];
 
     try {
-      const response = await chargeConsultationPrice(selectedAppointmentId, user.uid, consultant.uid);
+      const response = await chargeConsultationPrice(
+        selectedAppointmentId,
+        user.uid,
+        consultant.uid,
+      );
       const charge = response.data;
       displayMessage(UIText[language].amountChargedSuccessfully);
       setShowChargingModal(false);
       respondToAppointment(selectedAppointmentId, true, true);
       console.log('onPressCharge -> charge', charge);
     } catch (error) {
-      console.log("onPressCharge -> error.response.status", error.response.status);
+      console.log(
+        'onPressCharge -> error.response.status',
+        error.response.status,
+      );
       handleChargeError(error);
     }
 
     setCharging(false);
   };
 
-  const handleChargeError = error => {  
+  const handleChargeError = error => {
     setChargeModalLabelColor(Colors.red);
     switch (error.response.status) {
       case 470:
@@ -227,7 +262,7 @@ const MyAppointmentsScreen = ({ navigation }) => {
         reportProblem(error);
         break;
     }
-  }
+  };
 
   if (!loggedIn) {
     return (
@@ -252,11 +287,7 @@ const MyAppointmentsScreen = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <StatusBar
-        translucent
-        barStyle="default"
-        backgroundColor="rgba(0, 0, 0, 0.1)"
-      />
+     <StatusBar translucent barStyle="dark-content" backgroundColor="#fff" />
 
       <Header
         navigation={navigation}
@@ -267,12 +298,16 @@ const MyAppointmentsScreen = ({ navigation }) => {
 
       <SegmentedControl
         style={styles.segmentedControl}
-        values={[UIText[language].requests, UIText[language].upcoming, UIText[language].completed]}
+        values={[
+          UIText[language].requests,
+          UIText[language].upcoming,
+          UIText[language].completed,
+        ]}
         selectedIndex={selectedSegmentIndex}
         onChange={event => {
           setSelectedSegmentIndex(event.nativeEvent.selectedSegmentIndex);
         }}
-        appearance='light'
+        appearance="light"
       />
 
       <ScrollView
@@ -316,12 +351,12 @@ const MyAppointmentsScreen = ({ navigation }) => {
 
         <View style={styles.modalLabelContainer}>
           <Text style={[styles.modalLabel, {color: chargeModalLabelColor}]}>
-            { chargeModalLabel }
+            {chargeModalLabel}
           </Text>
         </View>
       </DismissibleModal>
 
-      { messageDisplayer }
+      {messageDisplayer}
     </View>
   );
 };

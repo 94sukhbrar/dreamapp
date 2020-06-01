@@ -44,7 +44,7 @@ const IconInputField = props => {
     if (onPress) {
       return (
         <TouchableOpacity
-          style={[ styles.textInput, {width: textInputWidth || '78%', justifyContent: 'center'} ]}
+          style={[ styles.textInput, {width: textInputWidth || '82%', justifyContent: 'center'} ]}
           onPress={onPress}>
           <Text style={{color: textColor, fontSize: 17,}}>{placeholder}</Text>
         </TouchableOpacity>
@@ -53,7 +53,7 @@ const IconInputField = props => {
   
     return (
       <TextInput
-        style={[styles.textInput, {width: textInputWidth || '78%', color: textColor, paddingTop: multiline && 10}]}
+        style={[styles.textInput, {width: textInputWidth || '85%', color: textColor, paddingTop: multiline && 10}]}
         placeholder={placeholder}
         value={value}
         onChangeText={onChangeText}
@@ -91,7 +91,7 @@ const IconInputField = props => {
 
 const styles = StyleSheet.create({
   container:{
-    width: '90%',
+    width: '100%',
     marginVertical: 7,
   },
   title: {

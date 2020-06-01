@@ -1,25 +1,27 @@
+/* eslint-disable react-native/no-inline-styles */
 import React from 'react';
-import { 
+import {
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
-  ViewPropTypes
+  ViewPropTypes,
 } from 'react-native';
 import PropTypes from 'prop-types';
 import Colors from '../Constants/Colors';
 import RoundImage from './RoundImage';
 import UIText from '../Constants/UIText';
 import Layout from '../Constants/Layout';
-import { translateDigitsToArabicIfLanguageIsArabic } from '../Utilities/DateAndTimeTools';
+import {translateDigitsToArabicIfLanguageIsArabic} from '../Utilities/DateAndTimeTools';
 import Rating from './Rating';
 import CardActionBtn from './CardActionBtn';
-import { round } from '../Utilities/Tools';
+import {round} from '../Utilities/Tools';
 import TwoBtnRow from './TwoBtnRow';
 
 const elementsMarginVertical = 4;
 
 const ConsultantCard = ({
+  navigation,
   language,
   photoUrl,
   name,
@@ -37,7 +39,6 @@ const ConsultantCard = ({
   onRespond,
   style,
 }) => {
-
   const acceptAndDeclineBtnsContainer = (
     <TwoBtnRow
       style={{marginTop: 15, marginBottom: 5}}
@@ -46,7 +47,7 @@ const ConsultantCard = ({
       secondBtnLabel={UIText[language].decline}
       onSecondBtnPress={() => onRespond(id, false)}
     />
-  )
+  );
 
   const scheduleAppointmentLayout = (
     <View style={styles.scheduleAppointmentLayoutContainer}>
@@ -55,22 +56,22 @@ const ConsultantCard = ({
         uri={photoUrl}
         size={65}
       />
+      <View style={{marginLeft: 5, flex: 1}}>
+        <Text style={[styles.name, {color: Colors.textColor}]}>{name}</Text>
 
-      <Text style={[styles.name, {color: Colors.textColor}]}>{name}</Text>
-
-      <Text style={[ styles.bodyText, {minHeight: 100} ]}>{bio}</Text>
+        <Text style={[styles.bodyText]}>{bio}</Text>
+        <Rating
+          size={22}
+          rating={rating}
+          language={language}
+          style={styles.ratingContainer}
+        />
+      </View>
 
       <Text style={[styles.price, {color: Colors.fadedTextColor}]}>
         ${translateDigitsToArabicIfLanguageIsArabic(pricePerCall, language)} /{' '}
         {UIText[language].call}
       </Text>
-
-      <Rating
-        size={22}
-        rating={rating}
-        language={language}
-        style={styles.ratingContainer}
-      />
     </View>
   );
 
@@ -89,19 +90,28 @@ const ConsultantCard = ({
           <Text style={[styles.name, {color: Colors.textColor}]}>{name}</Text>
 
           <Text style={[styles.price, {color: Colors.fadedTextColor}]}>
-            ${translateDigitsToArabicIfLanguageIsArabic(pricePerCall, language)} /{' '}
-            {UIText[language].call}
+            ${translateDigitsToArabicIfLanguageIsArabic(pricePerCall, language)}{' '}
+            / {UIText[language].call}
           </Text>
         </View>
       </View>
 
       {reviewingAccount && (
         <>
-          <Text selectable style={[styles.bodyText, {textAlign: 'left', paddingHorizontal: 10, marginTop: 15}]}>
+          <Text
+            selectable
+            style={[
+              styles.bodyText,
+              {textAlign: 'left', paddingHorizontal: 10, marginTop: 15},
+            ]}>
             Email: {email}
           </Text>
 
-          <Text style={[styles.bodyText, {textAlign: 'left', paddingHorizontal: 10}]}>
+          <Text
+            style={[
+              styles.bodyText,
+              {textAlign: 'left', paddingHorizontal: 10},
+            ]}>
             {bio}
           </Text>
 
@@ -112,13 +122,24 @@ const ConsultantCard = ({
             style={styles.ratingContainer}
           />
 
-          { acceptAndDeclineBtnsContainer }
+          {acceptAndDeclineBtnsContainer}
         </>
       )}
 
       {viewingPaymentDue && (
-        <View style={{marginTop: 15, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between'}}>
-          <Text selectable style={[styles.bodyText, {textAlign: 'left', paddingHorizontal: 10}]}>
+        <View
+          style={{
+            marginTop: 15,
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+          }}>
+          <Text
+            selectable
+            style={[
+              styles.bodyText,
+              {textAlign: 'left', paddingHorizontal: 10},
+            ]}>
             {UIText[language].paymentDue}: ${round(paymentDue, 1)}
           </Text>
 
@@ -135,23 +156,33 @@ const ConsultantCard = ({
     </View>
   );
 
- return(
-  <TouchableOpacity
-    style={[styles.container, {borderWidth: selectedId == id ? 1 : 0}, style]}
-    disabled={!onPress}
-    onPress={() => {onPress && onPress(id)}}>
-    { reviewingAccount || viewingPaymentDue ? dashboardLayout : scheduleAppointmentLayout }
-  </TouchableOpacity>
+  return (
+    <TouchableOpacity
+      style={[styles.container, {borderWidth: selectedId == id ? 1 : 0}, style]}
+      disabled={!onPress}
+      onPress={() => {
+        console.log('navigation: ', navigation);
+        navigation.navigate('ConsultantInfo', {consultantID: id});
+      }}
+      /* onPress={() => {
+    onPress && onPress(id);
+  }} */
+    >
+      {reviewingAccount || viewingPaymentDue
+        ? dashboardLayout
+        : scheduleAppointmentLayout}
+    </TouchableOpacity>
   );
-}
-
+};
 
 const styles = StyleSheet.create({
-  container:{
-    height: Layout.consultantCardsHeight,
-    width: 200,
+  container: {
+    //height: Layout.consultantCardsHeight,
+    flex: 1,
+    width: '95%',
     marginHorizontal: 8,
-    borderRadius: 15,
+    marginTop: 10,
+    borderRadius: 5,
     borderColor: Colors.tintColor,
     backgroundColor: Colors.elementsColor,
     shadowOffset: {width: 1, height: 1},
@@ -162,7 +193,9 @@ const styles = StyleSheet.create({
   },
   scheduleAppointmentLayoutContainer: {
     flex: 1,
-    justifyContent: 'center',
+    width: '100%',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     alignItems: 'center',
     padding: 4,
   },

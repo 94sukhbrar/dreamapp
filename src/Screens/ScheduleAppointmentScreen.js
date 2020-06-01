@@ -1,3 +1,6 @@
+/* eslint-disable no-shadow */
+/* eslint-disable eqeqeq */
+/* eslint-disable no-unused-vars */
 import React, {useEffect, useState} from 'react';
 import {
   View,
@@ -7,9 +10,10 @@ import {
   StatusBar,
   ScrollView,
   RefreshControl,
+  FlatList,
 } from 'react-native';
 import PropTypes from 'prop-types';
-import { shallowEqual, useSelector, useDispatch } from 'react-redux';
+import {shallowEqual, useSelector, useDispatch} from 'react-redux';
 import Colors from '../Constants/Colors';
 import Header from '../Components/Header';
 import UIText from '../Constants/UIText';
@@ -35,12 +39,11 @@ import Layout from '../Constants/Layout';
 import TabBarScreenStyles from '../SharedStyles/TabBarScreenStyles';
 import DateAndTimePicker from '../Components/DateAndTimePicker';
 import {IONICONS} from '../Constants/IconFamilies';
-import { fetchConsultants } from '../Redux/Actions';
+import {fetchConsultants} from '../Redux/Actions';
 import CustomIcon from '../Components/CustomIcon';
 import DismissibleModal from '../Components/DismissibleModal';
 import localNotificationDefaultConfig from '../Constants/LocalNotificationDefaultConfig';
 import PushNotification from 'react-native-push-notification';
-
 
 const isIos = Platform.OS === 'ios';
 
@@ -57,7 +60,6 @@ const defaultAppointmentTime = {
 };
 
 const ScheduleAppointmentScreen = ({navigation}) => {
-
   const {
     language,
     loggedIn,
@@ -91,7 +93,9 @@ const ScheduleAppointmentScreen = ({navigation}) => {
   const [minimumDate, setMinimumDate] = useState(null);
   const [maximumDate, setMaximumDate] = useState(null);
   const [dateTimePickerLabel, setDateTimePickerLabel] = useState('');
-  const [dateTimePickerLabelColor, setDateTimePickerLabelColor] = useState(Colors.tintColor);
+  const [dateTimePickerLabelColor, setDateTimePickerLabelColor] = useState(
+    Colors.tintColor,
+  );
   const [showHeaderBorder, setShowHeaderBorder] = useState(false);
   const [showLoginPopup, setShowLoginPopup] = useState(false);
 
@@ -99,15 +103,19 @@ const ScheduleAppointmentScreen = ({navigation}) => {
 
   useEffect(() => {
     dispatch(fetchConsultants());
-  }, []);
+  }, [dispatch]);
 
   const getConsultantAvailableTimeRange = consultantObject => {
     const {
       from: consultantMinimumUTCHour,
       to: consultantMaximumUTCHour,
     } = consultantObject.timeAvailable;
-    const consultantMinimumLocalHour = convertUTCHourToLocal(consultantMinimumUTCHour);
-    const consultantMaximumLocalHour = convertUTCHourToLocal(consultantMaximumUTCHour);
+    const consultantMinimumLocalHour = convertUTCHourToLocal(
+      consultantMinimumUTCHour,
+    );
+    const consultantMaximumLocalHour = convertUTCHourToLocal(
+      consultantMaximumUTCHour,
+    );
 
     return {
       consultantMinimumUTCHour,
@@ -115,14 +123,22 @@ const ScheduleAppointmentScreen = ({navigation}) => {
       consultantMinimumLocalHour,
       consultantMaximumLocalHour,
     };
-  }
-  
+  };
+
   const consultantsMapper = consultantUid => {
     const consultant = consultants[consultantUid];
-    const { name, photoUrl, pricePerCall, rating, numberOfRates, bio } = consultant;
-    
+    const {
+      name,
+      photoUrl,
+      pricePerCall,
+      rating,
+      numberOfRates,
+      bio,
+    } = consultant;
+
     return (
       <ConsultantCard
+        navigation={navigation}
         selectedId={selectedConsultantUid}
         language={language}
         name={name}
@@ -155,30 +171,35 @@ const ScheduleAppointmentScreen = ({navigation}) => {
       return;
     }
 
-    const { consultantMaximumUTCHour } = getConsultantAvailableTimeRange(selectedConsultant);
+    /* const {consultantMaximumUTCHour} = getConsultantAvailableTimeRange(
+      selectedConsultant,
+    ); */
 
-    const numberOfWeeksAppointmentMustBeWithin = 
+    /*  const numberOfWeeksAppointmentMustBeWithin =
       selectedConsultant.numberOfWeeksAppointmentMustBeWithin || 2;
-
+ */
     const currentUTCDate = convertLocalDateToUTC(new Date());
 
-    const todayIsNotAvailable = cantSelectAnAppointmentToday({
+    /*  const todayIsNotAvailable = cantSelectAnAppointmentToday({
       currentUTCDate,
       consultantMaximumUTCHour,
       timeWindow: selectedConsultant.timeWindow || 20,
-    });
+    }); */
 
     let newMinimumDate = new Date();
     let newMaximumDate = new Date();
 
-    if (todayIsNotAvailable)
+    /*  if (todayIsNotAvailable) {
       addDaysToDate(newMinimumDate, 1);
+    } */
 
-    addWeeksToDate(newMaximumDate, numberOfWeeksAppointmentMustBeWithin);
+    //addWeeksToDate(newMaximumDate, numberOfWeeksAppointmentMustBeWithin);
 
     setMinimumDate(newMinimumDate);
     setMaximumDate(newMaximumDate);
-    setDateTimePickerLabel(UIText[language].selectDateWithin(numberOfWeeksAppointmentMustBeWithin));
+    /* setDateTimePickerLabel(
+      UIText[language].selectDateWithin(numberOfWeeksAppointmentMustBeWithin),
+    ); */
     setDateTimePickerLabelColor(Colors.tintColor);
     showMode('date');
   };
@@ -196,9 +217,12 @@ const ScheduleAppointmentScreen = ({navigation}) => {
 
     setMinimumDate(null);
     setMaximumDate(null);
-    
+
     setDateTimePickerLabel(
-      UIText[language].selectHourWithin(consultantMinimumLocalHour, consultantMaximumLocalHour)
+      UIText[language].selectHourWithin(
+        consultantMinimumLocalHour,
+        consultantMaximumLocalHour,
+      ),
     );
 
     setDateTimePickerLabelColor(Colors.tintColor);
@@ -210,16 +234,21 @@ const ScheduleAppointmentScreen = ({navigation}) => {
     if (!isIos && event.type) {
       setShowPicker(false);
 
-      if (event.type == 'set') pickerMode == 'time' ? onSelectTime(date) : onSelectDate(date);
+      if (event.type == 'set') {
+        pickerMode == 'time' ? onSelectTime(date) : onSelectDate(date);
+      }
+    } else if (date) {
+      setSelectedDate(date);
     }
-
-    else if (date) setSelectedDate(date);
   };
 
   const onSelectDate = date => {
     const pickedDate = isIos ? selectedDate : date;
 
-    const pickedDateIsBeforeMinimumDate = isSelectedDateBeforeMinimumDate(pickedDate, minimumDate);
+    const pickedDateIsBeforeMinimumDate = isSelectedDateBeforeMinimumDate(
+      pickedDate,
+      minimumDate,
+    );
 
     if (pickedDateIsBeforeMinimumDate) {
       addDaysToDate(pickedDate, 1);
@@ -229,7 +258,7 @@ const ScheduleAppointmentScreen = ({navigation}) => {
       year: pickedDate.getFullYear(),
       month: pickedDate.getMonth(),
       date: pickedDate.getDate(),
-    }
+    };
 
     setAppointmentDate(newAppointmentDate);
     setDateTextColor(Colors.tintColor);
@@ -252,20 +281,26 @@ const ScheduleAppointmentScreen = ({navigation}) => {
 
     const selectedHourIsInRange = hourIsBetweenTwoHours({
       hour: pickedDate.getHours(),
-      twoHours:[consultantMinimumLocalHour, consultantMaximumLocalHour]
+      twoHours: [consultantMinimumLocalHour, consultantMaximumLocalHour],
     });
 
     if (!selectedHourIsInRange) {
-      const timeNotInRangeMessage = UIText[language]
-        .mustSelectHourWithin(consultantMinimumLocalHour, consultantMaximumLocalHour);
+      const timeNotInRangeMessage = UIText[language].mustSelectHourWithin(
+        consultantMinimumLocalHour,
+        consultantMaximumLocalHour,
+      );
 
       rejectSelectedTimeAndDate(timeNotInRangeMessage);
       return;
     }
 
-    const selectedTimeAlreadyTaken = rejectIfSelectedTimeAlreadyTaken(pickedDate);
+    const selectedTimeAlreadyTaken = rejectIfSelectedTimeAlreadyTaken(
+      pickedDate,
+    );
 
-    if (selectedTimeAlreadyTaken) return;
+    if (selectedTimeAlreadyTaken) {
+      return;
+    }
 
     const newAppointmentTime = {
       UTCHour: convertLocalDateToUTC(pickedDate).getHours(),
@@ -309,29 +344,30 @@ const ScheduleAppointmentScreen = ({navigation}) => {
       time: {
         hour: UTCAppointmentDate.getHours(),
         minute: UTCAppointmentDate.getMinutes(),
-      }
+      },
     };
 
     return appointmentUTCDateTime;
   };
 
   const navigateToPaymentMethodScreen = appointmentUTCDateTime => {
-    navigation.navigate(
-      'PaymentMethod',
-      {selectedConsultant, selectedConsultantUid, appointmentUTCDateTime}
-    );
+    navigation.navigate('PaymentMethod', {
+      selectedConsultant,
+      selectedConsultantUid,
+      appointmentUTCDateTime,
+    });
   };
 
-  const onPressSchedule = async() => {
+  const onPressSchedule = async () => {
     if (!loggedIn) {
       setShowLoginPopup(true);
       return;
     }
 
-    if (!selectedConsultant) {
+   /*  if (!selectedConsultant) {
       displayMessage(UIText[language].selectConsultantFirst);
       return;
-    }
+    } */
 
     if (!appointmentDate || !appointmentTime) {
       displayMessage(UIText[language].selectTimeAndDateFirst);
@@ -351,9 +387,13 @@ const ScheduleAppointmentScreen = ({navigation}) => {
     pickedDate.setHours(appointmentTime.localHour);
     pickedDate.setMinutes(appointmentTime.localMinute);
 
-    const selectedTimeAlreadyTaken = rejectIfSelectedTimeAlreadyTaken(pickedDate);
+    const selectedTimeAlreadyTaken = rejectIfSelectedTimeAlreadyTaken(
+      pickedDate,
+    );
 
-    if (selectedTimeAlreadyTaken) return;
+    if (selectedTimeAlreadyTaken) {
+      return;
+    }
 
     const appointmentUTCDateTime = getAppointmentUTCDateTime();
 
@@ -386,7 +426,9 @@ const ScheduleAppointmentScreen = ({navigation}) => {
         consultantMaximumUTCHour,
         language,
       );
-      const selectedDateAndTimeAlreadyTakenMessage = UIText[language].selectedTimeNotAvailableTry(
+      const selectedDateAndTimeAlreadyTakenMessage = UIText[
+        language
+      ].selectedTimeNotAvailableTry(
         nearestAvailableTimeBefore,
         nearestAvailableTimeAfter,
       );
@@ -400,9 +442,10 @@ const ScheduleAppointmentScreen = ({navigation}) => {
   const onPressLogin = () => {
     setShowLoginPopup(false);
     navigation.navigate('Auth');
-  }
+  };
 
-  const onScroll = event => setShowHeaderBorder(event.nativeEvent.contentOffset.y > 1);
+  const onScroll = event =>
+    setShowHeaderBorder(event.nativeEvent.contentOffset.y > 1);
 
   const onRefresh = () => {
     dispatch(fetchConsultants());
@@ -426,23 +469,22 @@ const ScheduleAppointmentScreen = ({navigation}) => {
     setShowHeaderBorder(false);
   };
 
-
   return (
     <View style={styles.container}>
-      <StatusBar translucent barStyle='default' backgroundColor='rgba(0, 0, 0, 0.1)' />
+      <StatusBar translucent barStyle="dark-content" backgroundColor="#fff" />
 
       <Header
         navigation={navigation}
         photoUrl={photoUrl}
         loggedIn={loggedIn}
         language={language}
-        borderShown={showHeaderBorder} 
+        borderShown={showHeaderBorder}
       />
 
       <ScrollView
         contentContainerStyle={styles.scrollViewContainer}
         scrollEnabled={true}
-        keyboardShouldPersistTaps='handled'
+        keyboardShouldPersistTaps="handled"
         onScroll={onScroll}
         scrollEventThrottle={25}
         refreshControl={
@@ -453,38 +495,51 @@ const ScheduleAppointmentScreen = ({navigation}) => {
             colors={['#0077bc']}
           />
         }>
-        <Text style={[ styles.selectConsultantTitle, {color: Colors.textColor} ]}>
+       {/*  <Text style={[styles.selectConsultantTitle, {color: Colors.textColor}]}>
           {UIText[language].selectConsultant}
-        </Text>
+        </Text> */}
 
-        <ConsultantsHorizontalPicker>
-          { !loadingConsultants && Object.keys(consultants).map(consultantsMapper) }
-        </ConsultantsHorizontalPicker>
+        {/*  <FlatList
+          style={{width: "100%", backgroundColor: "red", height: 100}}
+          data={consultants}
+          renderItem={({item}) => <View></View>}
+        /> */}
+        {!loadingConsultants && Object.keys(consultants).map(consultantsMapper)}
+        {/* <ConsultantsHorizontalPicker>
+          {!loadingConsultants &&
+            Object.keys(consultants).map(consultantsMapper)}
+        </ConsultantsHorizontalPicker> */}
 
-        <IconInputField
-          iconName='md-calendar'
+       {/*  <IconInputField
+          iconName="md-calendar"
           iconFamily={IONICONS}
           title={UIText[language].selectDate}
-          placeholder={convertDateToText(appointmentDate || defaultAppointmentDate, language)}
+          placeholder={convertDateToText(
+            appointmentDate || defaultAppointmentDate,
+            language,
+          )}
           textColor={dateTextColor}
           onPress={showDatePicker}
-        />
-        <IconInputField
-          iconName='md-time'
+        /> */}
+        {/*  <IconInputField
+          iconName="md-time"
           iconFamily={IONICONS}
           title={UIText[language].selectTime}
-          placeholder={convertTimeToText(appointmentTime || defaultAppointmentTime, language)}
+          placeholder={convertTimeToText(
+            appointmentTime || defaultAppointmentTime,
+            language,
+          )}
           textColor={timeTextColor}
           onPress={showTimePicker}
-        />
+        /> */}
       </ScrollView>
 
-      <View style={TabBarScreenStyles.bottomBtnContainer}>
+      {/* <View style={TabBarScreenStyles.bottomBtnContainer}>
         <PrimaryBtn
           label={UIText[language].scheduleAppointment}
           onPress={onPressSchedule}
         />
-      </View>
+      </View> */}
 
       <DateAndTimePicker
         language={language}
@@ -508,33 +563,31 @@ const ScheduleAppointmentScreen = ({navigation}) => {
         dismiss={() => setShowLoginPopup(false)}
         style={{width: '80%'}}
         includeCancelBtn>
-          <CustomIcon
-            name='ios-log-in'
-            iconFamily={IONICONS}
-            size={35}
-            color={Colors.tintColor}
-            style={styles.popupIcon}
-          />
+        <CustomIcon
+          name="ios-log-in"
+          iconFamily={IONICONS}
+          size={35}
+          color={Colors.tintColor}
+          style={styles.popupIcon}
+        />
 
-          <View style={styles.popupLabelContainer}>
-            <Text style={styles.popupLabel}>
-              {UIText[language].loginFirst}
-            </Text>
-          </View>
+        <View style={styles.popupLabelContainer}>
+          <Text style={styles.popupLabel}>{UIText[language].loginFirst}</Text>
+        </View>
       </DismissibleModal>
 
-      { messageDisplayer }
+      {messageDisplayer}
     </View>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
-  container:{
+  container: {
     flex: 1,
     backgroundColor: Colors.backgroundColor,
     alignItems: 'center',
   },
-  scrollViewContainer:{
+  scrollViewContainer: {
     alignItems: 'center',
     paddingBottom: 20,
   },
@@ -568,6 +621,6 @@ const styles = StyleSheet.create({
 
 ScheduleAppointmentScreen.propTypes = {
   navigation: PropTypes.object.isRequired,
-}
+};
 
 export default ScheduleAppointmentScreen;

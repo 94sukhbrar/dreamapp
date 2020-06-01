@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, TouchableOpacity, Text } from 'react-native';
+import { StyleSheet, View, TouchableOpacity, Text, Image } from 'react-native';
 import PropTypes from 'prop-types';
 import DreamLogo from './DreamLogo';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -9,32 +9,44 @@ import RoundImage from './RoundImage';
 import UIText from '../Constants/UIText';
 
 const Header = ({ navigation, language, photoUrl, loggedIn, borderShown }) => {
-
   const navigateToProfile = () => navigation.navigate('Profile');
   const navigateToSettings = () => navigation.navigate('Settings');
   const navigateToAuth = () => navigation.navigate('Auth');
 
   return (
-    <View style={[styles.container, {borderBottomColor: Colors.headerBorderColor, borderBottomWidth: borderShown ? .5 : 0}]}>
-      <TouchableOpacity style={styles.leftBtn} onPress={loggedIn ? navigateToProfile : navigateToAuth}>
-      {
-        loggedIn
-          ? <RoundImage size={35} uri={photoUrl} onPress={navigateToProfile} />
-          : <Text style={styles.loginBnLabel}>{UIText[language].login.toUpperCase()}</Text>
-      }
-      </TouchableOpacity>
-      <DreamLogo fontSize={30}/>
+    <View
+      style={[
+        styles.container,
+        {
+          borderBottomColor: Colors.headerBorderColor,
+          borderBottomWidth: borderShown ? 0.5 : 0,
+        },
+      ]}>
+      {/* <TouchableOpacity
+        style={styles.leftBtn}
+        onPress={loggedIn ? navigateToProfile : navigateToAuth}>
+        {loggedIn ? (
+          <RoundImage size={35} uri={photoUrl} onPress={navigateToProfile} />
+        ) : (
+            <Text style={styles.loginBnLabel}>
+              {UIText[language].login.toUpperCase()}
+            </Text>
+          )}
+      </TouchableOpacity> */}
       <TouchableOpacity style={styles.settingsBtn} onPress={navigateToSettings}>
-        <Icon name='md-settings' size={30} color={Colors.fadedTextColor} />
+        <Image
+          source={require('../../assets/images/drawerIcon.png')}
+          style={styles.backButtonImage}
+        />
       </TouchableOpacity>
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
-  container:{
+  container: {
     width: Layout.screenWidth,
-    height: Layout.rootScreensAbsoluteHeaderHeight,
+    height: 75,
     backgroundColor: Colors.backgroundColor,
     flexDirection: 'row',
     justifyContent: 'center',
@@ -53,12 +65,16 @@ const styles = StyleSheet.create({
     color: Colors.tintColor,
     marginBottom: 8,
   },
+  backButtonImage: {
+    width: 21,
+    height: 20,
+  },
   settingsBtn: {
     position: 'absolute',
     padding: 5,
     right: 10,
     bottom: Layout.screenHeight > 850 ? 25 : 5,
-  }
+  },
 });
 
 Header.propTypes = {
@@ -67,6 +83,6 @@ Header.propTypes = {
   photoUrl: PropTypes.string,
   loggedIn: PropTypes.bool.isRequired,
   borderShown: PropTypes.bool,
-}
+};
 
 export default Header;

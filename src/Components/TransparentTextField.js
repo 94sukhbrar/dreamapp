@@ -1,18 +1,22 @@
 import React from 'react';
-import { 
-  StyleSheet,
-  TextInput,
-  View,
-  Text,
-} from 'react-native';
+import { StyleSheet, TextInput, View, Text } from 'react-native';
 import PropTypes from 'prop-types';
 import Layout from '../Constants/Layout';
 
-const TransparentTextField = ({ placeholder, onChangeText, onBlur, onFocus, type, language, errorMessage }) => {
+const TransparentTextField = ({
+  placeholder,
+  onChangeText,
+  onBlur,
+  onFocus,
+  type,
+  language,
+  errorMessage,
+}) => {
+  let autoCompleteType,
+    secureTextEntry,
+    keyboardType = 'default';
 
-  let autoCompleteType, secureTextEntry, keyboardType = 'default';
-
-  switch(type) {
+  switch (type) {
     case 'fullName':
       autoCompleteType = 'name';
       break;
@@ -26,49 +30,52 @@ const TransparentTextField = ({ placeholder, onChangeText, onBlur, onFocus, type
       secureTextEntry = true;
       break;
   }
-  
+
   return (
     <View style={styles.container}>
-      {
-        errorMessage != '' && (
-          <View style={styles.errorMessageContainer}>
-            <Text style={styles.errorMessage}>{errorMessage}</Text>
-          </View>
-        )
-      }
-      
-      <TextInput 
-        style={[styles.textField, {textAlign: language == 'ar' ? 'right' : 'left'}]}
+      {errorMessage != '' && (
+        <View style={styles.errorMessageContainer}>
+          <Text style={styles.errorMessage}>{errorMessage}</Text>
+        </View>
+      )}
+
+      <TextInput
+        style={[
+          styles.textField,
+          { textAlign: language == 'ar' ? 'right' : 'left' },
+        ]}
         placeholder={placeholder}
         autoCompleteType={autoCompleteType}
         keyboardType={keyboardType}
         secureTextEntry={secureTextEntry}
-        placeholderTextColor='#fff'
+        //placeholderTextColor="red"
         onChangeText={onChangeText}
         onFocus={onFocus}
         onBlur={onBlur}
       />
     </View>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: 'rgba(255, 255, 255, 0.3)',
-    marginVertical: Layout.authScreensElementsAbsoluteMarginVertical,
-    width: Layout.authScreensElementsWidth,
-    height: Layout.authScreensElementsHeight,
+    backgroundColor: '#f9f8f8',
+    width: '100%',
+    height: 50,
+    borderRadius: 5,
+    marginTop: 24,
+    //padding: 15,
   },
-  textField:{
+  textField: {
     width: '100%',
     height: '100%',
     textAlignVertical: 'center',
     paddingLeft: 20,
     paddingRight: 8,
-    color: '#fff',
+    color: '#425c5a',
     borderRadius: 5,
-    borderWidth: 0.5,
-    borderColor: '#fff',
+    //borderWidth: 0.5,
+    //borderColor: 'red',
   },
   errorMessageContainer: {
     position: 'absolute',
@@ -80,15 +87,16 @@ const styles = StyleSheet.create({
   errorMessage: {
     color: 'red',
     fontSize: Layout.errorMessageFontSize,
-  }
+  },
 });
 
 TransparentTextField.propTypes = {
   placeholder: PropTypes.string,
   onChangeText: PropTypes.func,
   onBlur: PropTypes.func,
-  type: PropTypes.oneOf(['fullName', 'email', 'password', 'confirmPassword']).isRequired,
+  type: PropTypes.oneOf(['fullName', 'email', 'password', 'confirmPassword'])
+    .isRequired,
   language: PropTypes.oneOf(['ar', 'en']).isRequired,
-}
+};
 
 export default TransparentTextField;

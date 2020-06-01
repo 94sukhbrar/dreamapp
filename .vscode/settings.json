@@ -5,5 +5,24 @@
     "SETTHEME",
     "xlight",
     "تسجيل"
-  ]
+  ],
+  "workbench.colorCustomizations": {
+    "activityBar.background": "#322f1e",
+    "titleBar.activeBackground": "#12110b",
+    "titleBar.activeForeground": "#e7e7e7",
+    "activityBar.activeBackground": "#322f1e",
+    "activityBar.activeBorder": "#3c645e",
+    "activityBar.foreground": "#e7e7e7",
+    "activityBar.inactiveForeground": "#e7e7e799",
+    "activityBarBadge.background": "#3c645e",
+    "activityBarBadge.foreground": "#e7e7e7",
+    "statusBar.background": "#12110b",
+    "statusBar.border": "#12110b",
+    "statusBar.foreground": "#e7e7e7",
+    "statusBarItem.hoverBackground": "#322f1e",
+    "titleBar.border": "#12110b",
+    "titleBar.inactiveBackground": "#12110b99",
+    "titleBar.inactiveForeground": "#e7e7e799"
+  },
+  "peacock.color": "#12110b"
 }

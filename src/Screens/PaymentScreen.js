@@ -3,6 +3,8 @@ import {
   StyleSheet,
   View,
   Text,
+  Image,
+  TextInput
 } from 'react-native';
 import { shallowEqual, useSelector, useDispatch } from 'react-redux';
 import Colors from '../Constants/Colors';
@@ -49,6 +51,9 @@ const PaymentScreen = ({ route, navigation }) => {
   const [schedule, loading] = useAppointmentScheduler(name, uid);
   const [messageDisplayer, displayMessage] = useMessageDisplayer();
 
+  const [fullName, setFullName] = useState("");
+  const [cardNumber, setCardNumber] = useState();
+
   /**
    * @description Schedule an appointment without requesting card details. (for testing)
    */
@@ -89,7 +94,7 @@ const PaymentScreen = ({ route, navigation }) => {
     }
   };
 
-  const showCardForm = async() => {
+  const showCardForm = async () => {
     try {
       const token = await stripe.paymentRequestWithCardForm({
         requiredBillingAddressFields: 'zip',
@@ -121,16 +126,25 @@ const PaymentScreen = ({ route, navigation }) => {
   return (
     <View style={styles.container}>
       <NavigationHeader
-        title={UIText[language].scheduleAppointment}
+        title={"Checkout"/* UIText[language].scheduleAppointment */}
         navigation={navigation}
         language={language}
       />
+      {/* <Text style={styles.headerText}>Checkout</Text> */}
+      <View style={styles.cardLogos}>
+        <Image
+          style={styles.masterCardLogo}
+          source={require("../../assets/images/masterCardLogo.png")} />
+        <Image
+          style={styles.visaLogo}
+          source={require("../../assets/images/visaLogo.png")} />
+      </View>
 
       <AppointmentCard
-        style={{marginTop: 35}}
+        style={{ marginTop: 35 }}
         appointmentId={''}
         localDateText={convertDateToText(date, language)}
-        localTimeText={convertTimeToText(getAppointmentTime({time}), language)}
+        localTimeText={convertTimeToText(getAppointmentTime({ time }), language)}
         name={selectedConsultant.name}
         rating={selectedConsultant.rating}
         userType={USER}
@@ -138,11 +152,28 @@ const PaymentScreen = ({ route, navigation }) => {
         minimized
       />
 
+     {/*  <View style={styles.inputContainer}>
+        <Text>Full name: (on the card)</Text>
+        <TextInput
+          style={styles.textInputField}
+          onChangeText={fullName => this.setState({ fullName })} />
+      </View> */}
+
+     {/*  <View style={styles.inputContainer}>
+        <Text>Card number:</Text>
+        <TextInput
+          style={styles.textInputField}
+          keyboardType={"number-pad"}
+          maxLength={16}
+          //value={this.state.cardNumber}
+          onChangeText={cardNumber => this.setState({ cardNumber })} />
+      </View> */}
+
       <Text style={styles.priceLabel}>
         {UIText[language].consultationPrice + ':\t'}
         <Text style={styles.price}>
-          { selectedConsultant.pricePerCall +
-          (selectedConsultant.pricePerCall % 1 === 0 ? '.00' : '') + ' ' }USD
+          {selectedConsultant.pricePerCall +
+            (selectedConsultant.pricePerCall % 1 === 0 ? '.00' : '') + ' '}USD
         </Text>
       </Text>
 
@@ -159,10 +190,10 @@ const PaymentScreen = ({ route, navigation }) => {
         />
 
         <Text style={styles.checkBoxLabel}>
-            {UIText[language].iAgreeTo}
-            <Text onPress={showPrivacyPolicy} style={{color: Colors.tintColor}}>
-              {' ' + UIText[language].privacyPolicy.toLowerCase()}
-            </Text>
+          {UIText[language].iAgreeTo}
+          <Text onPress={showPrivacyPolicy} style={{ color: Colors.tintColor }}>
+            {' ' + UIText[language].privacyPolicy.toLowerCase()}
+          </Text>
         </Text>
       </View>
 
@@ -188,18 +219,18 @@ const PaymentScreen = ({ route, navigation }) => {
         onPressOk={onSuccessModalDismiss}
         dismiss={onSuccessModalDismiss}
         animateOnDismiss={false}>
-          <View style={styles.successPopupContainer}>
-            <CustomIcon
-              iconFamily={FEATHER}
-              name="check-circle"
-              color={Colors.tintColor}
-              size={90}
-            />
+        <View style={styles.successPopupContainer}>
+          <CustomIcon
+            iconFamily={FEATHER}
+            name="check-circle"
+            color={Colors.tintColor}
+            size={90}
+          />
 
-            <Text style={styles.successMessage}>
-              {UIText[language].appointmentScheduledSuccessfully}
-            </Text>
-          </View>
+          <Text style={styles.successMessage}>
+            {UIText[language].appointmentScheduledSuccessfully}
+          </Text>
+        </View>
       </DismissibleModal>
 
       {messageDisplayer}
@@ -208,14 +239,21 @@ const PaymentScreen = ({ route, navigation }) => {
 };
 
 const styles = StyleSheet.create({
-  container:{
+  container: {
     flex: 1,
     backgroundColor: Colors.backgroundColor,
+    paddingHorizontal: 25,
     alignItems: 'center',
   },
   payBtn: {
     position: 'absolute',
     bottom: '6%',
+  },
+  headerText: {
+    color: "#425c5a",
+    fontSize: 30,
+    fontWeight: "700",
+    marginTop: 1
   },
   priceLabel: {
     marginVertical: 20,
@@ -224,6 +262,20 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     paddingHorizontal: 30,
     width: '100%',
+  },
+  inputContainer: {
+    marginTop: 19
+  },
+  textInputField: {
+    width: "100%",
+    height: 50,
+    borderRadius: 5,
+    backgroundColor: "#f9f8f8",
+    marginTop: 10,
+    color: "#425c5a",
+    fontSize: 15,
+    fontWeight: "700",
+    paddingLeft: 7
   },
   price: {
     fontSize: 18,
@@ -250,6 +302,20 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: Colors.grayTextColor,
     textAlign: 'center',
+  },
+  cardLogos: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginTop: 5
+  },
+  masterCardLogo: {
+    width: 37,
+    height: 23
+  },
+  visaLogo: {
+    width: 50,
+    height: 16,
+    marginLeft: 15
   },
   successPopupContainer: {
     width: '100%',

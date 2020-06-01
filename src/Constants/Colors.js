@@ -1,5 +1,5 @@
 const Colors = {
-  tintColor: '#2E63FF',
+  tintColor: '#425c5a',
   tintOrGray: '#0077bc',
   grayOrTint: 'rgb(50, 50, 50)',
   disabledTintColor: 'rgba(46, 98, 255, 0.8)',
@@ -10,7 +10,7 @@ const Colors = {
   extraFadedTextColor: '#B8B8B8',
   invertedTextColor: '#fff',
   loadingBarColor: '#E3E3E3',
-  elementsColor: '#fff',
+  elementsColor: '#f9f8f8',
   backgroundColor: '#FFF',
   invertedBackgroundColor: '#000',
   borderColor: '#b4b4b4',

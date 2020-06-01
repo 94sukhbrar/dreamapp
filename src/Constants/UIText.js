@@ -18,6 +18,7 @@ const getArabicWeek = numberOfWeeks => {
 
 const UIText = {
   en: {
+    profileSettings: "Profile settings",
     login: 'Login',
     signUp: 'SIGN UP',
     fullName: 'Full name',
@@ -142,8 +143,8 @@ const UIText = {
     privacyPolicy: 'Privacy Policy',
     missedConsultation: 'Missed Consultation',
     selectDateWithin: numberOfWeeks => `Select a date within ${numberOfWeeks} week${numberOfWeeks > 1 ? 's' : ''}`,
-    selectHourWithin: (from , to) => `Select time between ${convert24HrFormatTo12Hr(from)} and ${convert24HrFormatTo12Hr(to)}`,
-    mustSelectHourWithin: (from , to) => `Time must be between ${convert24HrFormatTo12Hr(from)} and ${convert24HrFormatTo12Hr(to)}`,
+    selectHourWithin: (from, to) => `Select time between ${convert24HrFormatTo12Hr(from)} and ${convert24HrFormatTo12Hr(to)}`,
+    mustSelectHourWithin: (from, to) => `Time must be between ${convert24HrFormatTo12Hr(from)} and ${convert24HrFormatTo12Hr(to)}`,
     appointmentIsNowNotification: peerName => `Your Dream Consultation With ${peerName} has started. Tab to join the call.`,
     appointmentMessageWhileAnotherCallIsActive: peerName => `Your Dream Consultation With ${peerName} has started. Start the consultation from your appointments screen to join the call`,
     missedConsultationNotification: peerName => `You missed your Consultation appointment With ${peerName}`,
@@ -152,7 +153,7 @@ const UIText = {
     userJoinedChannel: peerName => `${peerName} Joined the channel`,
     sendingInvitationTo: peerName => ` Sending channel invitation to ${peerName}`,
     platformPercentage: percentage => `Platform's Percentage is ${percentage}%`,
-    noAppointments: (status='') => `There aren't any ${status.toLowerCase()} appointments`,
+    noAppointments: (status = '') => `There aren't any ${status.toLowerCase()} appointments`,
     peerNotConnected: peerName => `${peerName} Is Not connected`,
     chargeConsultationPrice: price => `Accept appointment and charge $${price}`,
     checkInternetConnectionAndTry: (action = 'again') => `Check your internet connection and try ${action}`,
@@ -304,10 +305,10 @@ const UIText = {
     and: 'و',
     privacyPolicy: 'سياسة الخصوصية',
     missedConsultation: 'استشارة فائتة',
-    noAppointments: (status='') => `لا يوجد أي مواعيد ${status.toLowerCase()}`,
+    noAppointments: (status = '') => `لا يوجد أي مواعيد ${status.toLowerCase()}`,
     selectDateWithin: numberOfWeeks => translateDigitsToArabicIfLanguageIsArabic(`اختر موعدًا في خلال${numberOfWeeks > 2 ? ` ${numberOfWeeks}` : ''} ${getArabicWeek(numberOfWeeks)}`),
-    selectHourWithin: (from , to) => translate12HrFormatHourToArabic(`اختر موعدًا بين الساعة ${convert24HrFormatTo12Hr(from)} و ${convert24HrFormatTo12Hr(to)}`),
-    mustSelectHourWithin: (from , to) => translate12HrFormatHourToArabic(`يجب أن يكون الموعد بين الساعة ${convert24HrFormatTo12Hr(from)} و ${convert24HrFormatTo12Hr(to)}`),
+    selectHourWithin: (from, to) => translate12HrFormatHourToArabic(`اختر موعدًا بين الساعة ${convert24HrFormatTo12Hr(from)} و ${convert24HrFormatTo12Hr(to)}`),
+    mustSelectHourWithin: (from, to) => translate12HrFormatHourToArabic(`يجب أن يكون الموعد بين الساعة ${convert24HrFormatTo12Hr(from)} و ${convert24HrFormatTo12Hr(to)}`),
     appointmentIsNowNotification: peerName => `استشارتك مع ${peerName} قد بدأت. اضغط لتبدأ المكالمة`,
     appointmentMessageWhileAnotherCallIsActive: peerName => `استشارتك مع ${peerName} قد بدأت. قم ببدأ الاستشارة من شاشة المواعيد لتبدأ المكالمة`,
     missedConsultationNotification: peerName => `لقد فاتك موعد الإستشارة مع ${peerName}`,
@@ -316,7 +317,7 @@ const UIText = {
     userJoinedChannel: peerName => `${peerName} قد إنضم للقناة`,
     selectedTimeNotAvailableTry: (nearestTimeBefore, nearestTimeAfter) => `الموعد الذي تم اختياره محجوز بالفعل\nيمكنك اختيار ${nearestTimeBefore} أو ${nearestTimeAfter}`,
     sendingInvitationTo: peerName => ` جاري إرسال دعوة للإنضمام إلى ${peerName}`,
-    platformPercentage: percentage => translateDigitsToArabicIfLanguageIsArabic( `نسبة البرنامج ${percentage}٪`),
+    platformPercentage: percentage => translateDigitsToArabicIfLanguageIsArabic(`نسبة البرنامج ${percentage}٪`),
     peerNotConnected: peerName => `${peerName} ليس متصلًا`,
     chargeConsultationPrice: price => `قبول الموعد و محسابة المستخدم على $${price}`,
     checkInternetConnectionAndTry: action => `قم بالتأكد من اتصالك بالإنترنت ثم حاول ${action || 'مجددًا'}`,
@@ -343,8 +344,8 @@ const UIText = {
       11: 'ديسمبر',
     }
   },
-  englishToArabicDigitsMap: {0: '٠', 1: '١', 2: '٢', 3: '٣', 4: '٤', 5: '٥', 6: '٦', 7: '٧', 8: '٨', 9: '٩'},
-  englishToArabicTimePeriodsMap: {am: 'ص', pm: 'م'},
+  englishToArabicDigitsMap: { 0: '٠', 1: '١', 2: '٢', 3: '٣', 4: '٤', 5: '٥', 6: '٦', 7: '٧', 8: '٨', 9: '٩' },
+  englishToArabicTimePeriodsMap: { am: 'ص', pm: 'م' },
 }
 
 export default UIText;

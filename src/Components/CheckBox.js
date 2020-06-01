@@ -1,5 +1,5 @@
 import React from 'react';
-import { 
+import {
   StyleSheet,
   View,
   Text,
@@ -9,41 +9,41 @@ import PropTypes from 'prop-types';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Colors from '../Constants/Colors';
 
-const boxSize = 15;
+const boxSize = 24;
 
-const CheckBox = ({label, checked, onPress, fillColor, checkMarkColor}) => {
+const CheckBox = ({ label, checked, onPress, fillColor, checkMarkColor }) => {
 
   const boxColors = {
-    backgroundColor: checked ? fillColor : 'transparent',
-    borderColor: checked ? 'transparent' : '#51C8F4',
+    backgroundColor: fillColor,
+    borderColor: 'transparent',
   }
 
   return (
     <View style={styles.container} >
       <TouchableOpacity style={styles.boxContainer} onPress={onPress}>
-        <View style={[ styles.box, boxColors ]} onPress={onPress}>
-          {checked && <Icon name='md-checkmark' color={checkMarkColor} size={13} />}
+        <View style={[styles.box, boxColors]} onPress={onPress}>
+          {checked && <Icon name='md-checkmark' color={checkMarkColor} size={19} />}
         </View>
       </TouchableOpacity>
-      <Text style={{color: Colors.textColor}}>{label}</Text>
+      <Text style={{ color: Colors.textColor }}>{label}</Text>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container:{
+  container: {
     flexDirection: 'row',
     alignItems: 'center',
   },
-  box:{
+  box: {
     width: boxSize,
     height: boxSize,
-    borderRadius: 3,
+    borderRadius: 6,
     borderWidth: 1,
     justifyContent: 'center',
     alignItems: 'center',
   },
-  boxContainer:{
+  boxContainer: {
     padding: 5,
   },
 });

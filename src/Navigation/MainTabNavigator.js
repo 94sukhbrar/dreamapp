@@ -1,6 +1,11 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+
+
 import ScheduleAppointmentScreen from '../Screens/ScheduleAppointmentScreen';
+
+import ScheduleStack from "./ScheduleStack";
+
 import TabBarIcon from '../Components/TabBarIcon';
 import Colors from '../Constants/Colors';
 import MyAppointmentsScreen from '../Screens/MyAppointmentsScreen';
@@ -36,7 +41,7 @@ const MainTabNavigator = () => {
       {!userIsConsultant && (
         <Tab.Screen
           name="Schedule"
-          component={ScheduleAppointmentScreen}
+          component={ScheduleStack}
           options={{
             tabBarLabel: UIText[language].schedule,
             tabBarIcon: ({ color, size }) => (

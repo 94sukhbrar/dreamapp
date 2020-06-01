@@ -9,10 +9,9 @@ import {
 import PropTypes from 'prop-types';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Colors from '../Constants/Colors';
-import { Dropdown } from 'react-native-material-dropdown';
+import {Dropdown} from 'react-native-material-dropdown';
 
 const FullWidthButton = props => {
-
   const buttonContainerStyle = [
     styles.buttonContainer,
     {backgroundColor: Colors.elementsColor, borderColor: Colors.borderColor},
@@ -21,7 +20,7 @@ const FullWidthButton = props => {
 
   const buttonNameStyle = [
     styles.buttonName,
-    { color: 'light' == 'dark' ? Colors.textColor : Colors.tintColor },
+    {color: 'light' === 'dark' ? Colors.textColor : Colors.tintColor},
     props.textStyle,
   ];
 
@@ -30,18 +29,28 @@ const FullWidthButton = props => {
   const idleIconColor = 'rgb(170, 170, 170)';
   const activeIconColor = Colors.tintColor;
 
-  if (props.iconName) 
-    icon = <Icon name={props.iconName} size={props.iconSize || 26} color={props.active ? activeIconColor : idleIconColor} />;
-
-  if (props.iconImage) 
-    icon = props.iconImage;
-
-  const onLongPress = () => {
-    if (!props.onLongPress) return;
-    props.onLongPress();
+  if (props.iconName) {
+    icon = (
+      <Icon
+        name={props.iconName}
+        size={props.iconSize || 26}
+        color={props.active ? activeIconColor : idleIconColor}
+      />
+    );
   }
 
-  const showDropdown = () => { 
+  if (props.iconImage) {
+    icon = props.iconImage;
+  }
+
+  const onLongPress = () => {
+    if (!props.onLongPress) {
+      return;
+    }
+    props.onLongPress();
+  };
+
+  const showDropdown = () => {
     return (
       <Dropdown
         value={props.language}
@@ -52,28 +61,29 @@ const FullWidthButton = props => {
         itemColor={'#000'}
         selectedItemColor={'#000'}
         disabledItemColor={'#000'}
-        textColor={Colors.textColor}
+        textColor={"#ffcea2"}
         containerStyle={styles.dropdown}
-        shadeOpacity={.2}
+        shadeOpacity={0.2}
         rippleOpacity={0}
         rippleDuration={0}
         onChangeText={props.onChangeDropDownValue}
         useNativeDriver
       />
     );
-  }
+  };
 
   return (
-    <TouchableOpacity style={buttonContainerStyle} onPress={props.onPress} onLongPress={onLongPress} >
-      <Text style={buttonNameStyle}>
-        {props.buttonName}
-      </Text>
+    <TouchableOpacity
+      style={buttonContainerStyle}
+      onPress={props.onPress}
+      onLongPress={onLongPress}>
+      <Text style={buttonNameStyle}>{props.buttonName}</Text>
       <View style={styles.rightSectionContainer}>
-        { props.dropdownData ? showDropdown() : icon }
+        {props.dropdownData ? showDropdown() : icon}
       </View>
     </TouchableOpacity>
-  )
-}
+  );
+};
 
 FullWidthButton.propTypes = {
   onPress: PropTypes.func,
@@ -85,10 +95,10 @@ FullWidthButton.propTypes = {
   active: PropTypes.bool,
   onChangeDropDownValue: PropTypes.func,
   dropdownData: PropTypes.array,
-}
+};
 
 const styles = StyleSheet.create({
-  buttonContainer:{
+  buttonContainer: {
     width: '100%',
     height: 55,
     flexDirection: 'row',
@@ -106,8 +116,7 @@ const styles = StyleSheet.create({
   },
   dropdown: {
     width: 90,
-  }
+  },
 });
 
 export default FullWidthButton;
-
