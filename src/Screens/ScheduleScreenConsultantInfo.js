@@ -1,6 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable no-undef */
-/* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from 'react';
 import {
   View,
@@ -12,9 +9,14 @@ import {
   StatusBar,
 } from 'react-native';
 //import DateTimePicker from '@react-native-community/datetimepicker';
+import Header from '../Components/Header';
+import RoundImage from '../Components/RoundImage';
+import Icon from 'react-native-vector-icons/Ionicons';
+import Rating from '../Components/Rating';
 import UIText from '../Constants/UIText';
 import Colors from '../Constants/Colors';
 import IconInputField from '../Components/IconInputField';
+import { translateDigitsToArabicIfLanguageIsArabic } from '../Utilities/DateAndTimeTools';
 import DismissibleModal from '../Components/DismissibleModal';
 import CustomIcon from '../Components/CustomIcon';
 import { IONICONS } from '../Constants/IconFamilies';
@@ -35,6 +37,7 @@ import {
   isSelectedDateAndTimeAlreadyTaken,
   getNearestAvailableTime,
 } from '../Utilities/DateAndTimeTools';
+import { ScrollView } from 'react-native-gesture-handler';
 //import {Ionicons} from '@expo/vector-icons';
 //import {Divider} from 'react-native-elements';
 const currentDate = new Date();
@@ -53,7 +56,7 @@ const defaultAppointmentTime = {
 const ConsultantInfo = ({ navigation, route }) => {
   useEffect(() => {
     selectConsultantCard(route.params.consultantID);
-    console.log('pozivamo na pocetku!', route);
+    console.log('-------pozivamo na pocetku! konsultant: ', route);
   }, [route, selectConsultantCard]);
 
   const {
@@ -447,34 +450,74 @@ const ConsultantInfo = ({ navigation, route }) => {
   }; */
   return (
     <View style={styles.container}>
+
+      <View style={{ width: 40, height: 40, position: "absolute", top: 29, left: 25, zIndex: 999 }}>
+        <TouchableOpacity
+          onPress={() => navigation.goBack()}>
+          <Icon name="ios-arrow-round-back" size={35} style={{}} color={'black'} />
+        </TouchableOpacity>
+      </View>
+      <Header
+        navigation={navigation}
+        photoUrl={photoUrl}
+        loggedIn={loggedIn}
+        language={language}
+        borderShown={showHeaderBorder}
+      />
       <StatusBar translucent barStyle="dark-content" backgroundColor="#fff" />
       {/* <ConsultantComponent
           disable={true}
           info={this.props.route.params.info}
         /> */}
-      <View style={styles.reviewsButton}>
-        <Text style={styles.reviewsButtonText}>Reviews</Text>
-        {/* <Ionicons name="ios-arrow-down" size={17} color="#ffcea2" /> */}
-      </View>
+      <ScrollView style={{ width: "100%", paddingHorizontal: 25, }}>
+        <View style={styles.scheduleAppointmentLayoutContainer}>
+          <RoundImage
+            style={{ marginVertical: 4 }}
+            uri={route.params.photoUrl}
+            size={65}
+          />
+          <View style={{ marginLeft: 5, flex: 1 }}>
+            <Text style={[styles.name, { color: Colors.textColor }]}>{route.params.name}</Text>
 
-      <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 40 }}>
-        <Text style={styles.availabilityText}>Availability</Text>
-        {/* <Divider style={{backgroundColor: '#000000', height: 1, flex: 1}} /> */}
-      </View>
+            <Text style={[styles.bodyText]}>{route.params.bio}</Text>
+            <Rating
+              size={22}
+              rating={route.params.rating}
+              language={language}
+              style={styles.ratingContainer}
+            />
+          </View>
 
-      <Text style={{ marginTop: 21 }}>Days:</Text>
-      <Text style={styles.availabilityInfo}>Monday,Friday, Sunday</Text>
+          <Text style={[styles.price, { color: '#425c5a', fontWeight: 'bold' }]}>
+            {translateDigitsToArabicIfLanguageIsArabic(route.params.pricePerCall, language)}${' '}
+            {/* /{' '} */}
+            {/*  {UIText[language].call} */}
+          </Text>
+        </View>
 
-      <Text style={{ marginTop: 21 }}>Time:</Text>
-      <View style={{ flexDirection: 'row', marginTop: 4 }}>
-        <Text>From </Text>
-        <Text style={{ fontWeight: '800' }}>11:00 am</Text>
-        <Text> to </Text>
-        <Text style={{ fontWeight: '800' }}>11:00 pm</Text>
-      </View>
+        {/* <View style={styles.reviewsButton}>
+          <Text style={styles.reviewsButtonText}>Reviews</Text>
+          <Ionicons name="ios-arrow-down" size={17} color="#ffcea2" />
+        </View> */}
 
-      <Text>Please select the appointment</Text>
-      {/* {this.state.showPicker && (
+        {/* <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 40 }}>
+          <Text style={styles.availabilityText}>Availability</Text>
+          <Divider style={{backgroundColor: '#000000', height: 1, flex: 1}} />
+        </View> */}
+
+        {/*  <Text style={{ marginTop: 21 }}>Days:</Text>
+        <Text style={styles.availabilityInfo}>Monday,Friday, Sunday</Text>
+
+        <Text style={{ marginTop: 21 }}>Time:</Text>
+        <View style={{ flexDirection: 'row', marginTop: 4 }}>
+          <Text>From </Text>
+          <Text style={{ fontWeight: '800' }}>11:00 am</Text>
+          <Text> to </Text>
+          <Text style={{ fontWeight: '800' }}>11:00 pm</Text>
+        </View> */}
+
+        <Text style={{ marginTop: 15 }}>Please select the appointment</Text>
+        {/* {this.state.showPicker && (
           <DateTimePicker
             //style={{ position: "absolute", top: 0 }}
             testID="dateTimePicker"
@@ -486,7 +529,7 @@ const ConsultantInfo = ({ navigation, route }) => {
             //onChange={onChange}
           />
         )} */}
-     {/*  <View style={{ flexDirection: 'row' }}>
+        {/*  <View style={{ flexDirection: 'row' }}>
         <View style={styles.input}>
           <Text style={styles.inputText}>Select date</Text>
         </View>
@@ -497,7 +540,7 @@ const ConsultantInfo = ({ navigation, route }) => {
         </TouchableOpacity>
       </View> */}
 
-      {/* {this.state.showPicker && (
+        {/* {this.state.showPicker && (
           <DateTimePicker
             testID="dateTimePicker"
             timeZoneOffsetInMinutes={0}
@@ -509,70 +552,71 @@ const ConsultantInfo = ({ navigation, route }) => {
           />
         )} */}
 
-      <IconInputField
-        iconName="md-calendar"
-        iconFamily={IONICONS}
-        title={UIText[language].selectDate}
-        placeholder={convertDateToText(
-          appointmentDate || defaultAppointmentDate,
-          language,
-        )}
-        textColor={dateTextColor}
-        onPress={showDatePicker}
-      />
-
-      <IconInputField
-        iconName="md-time"
-        iconFamily={IONICONS}
-        title={UIText[language].selectTime}
-        placeholder={convertTimeToText(
-          appointmentTime || defaultAppointmentTime,
-          language,
-        )}
-        textColor={timeTextColor}
-        onPress={showTimePicker}
-      />
-
-      <DateAndTimePicker
-        language={language}
-        visible={showPicker}
-        onPressSelect={pickerMode === 'date' ? onSelectDate : onSelectTime}
-        dismiss={() => setShowPicker(false)}
-        pickerMode={pickerMode}
-        labelColor={dateTimePickerLabelColor}
-        label={dateTimePickerLabel}
-        minimumDate={minimumDate}
-        maximumDate={maximumDate}
-        value={selectedDate}
-        onChange={onDateTimeChange}
-      />
-
-      <DismissibleModal
-        visible={showLoginPopup}
-        okayBtnLabel={UIText[language].login}
-        cancelBtnLabel={UIText[language].cancel}
-        onPressOk={onPressLogin}
-        dismiss={() => setShowLoginPopup(false)}
-        style={{ width: '80%' }}
-        includeCancelBtn>
-        <CustomIcon
-          name="ios-log-in"
+        <IconInputField
+          iconName="md-calendar"
           iconFamily={IONICONS}
-          size={35}
-          color={Colors.tintColor}
-          style={styles.popupIcon}
+          title={UIText[language].selectDate}
+          placeholder={convertDateToText(
+            appointmentDate || defaultAppointmentDate,
+            language,
+          )}
+          textColor={dateTextColor}
+          onPress={showDatePicker}
         />
 
-        <View style={styles.popupLabelContainer}>
-          <Text style={styles.popupLabel}>{UIText[language].loginFirst}</Text>
-        </View>
-      </DismissibleModal>
+        <IconInputField
+          iconName="md-time"
+          iconFamily={IONICONS}
+          title={UIText[language].selectTime}
+          placeholder={convertTimeToText(
+            appointmentTime || defaultAppointmentTime,
+            language,
+          )}
+          textColor={timeTextColor}
+          onPress={showTimePicker}
+        />
 
-      {messageDisplayer}
+        <DateAndTimePicker
+          language={language}
+          visible={showPicker}
+          onPressSelect={pickerMode === 'date' ? onSelectDate : onSelectTime}
+          dismiss={() => setShowPicker(false)}
+          pickerMode={pickerMode}
+          labelColor={dateTimePickerLabelColor}
+          label={dateTimePickerLabel}
+          minimumDate={minimumDate}
+          maximumDate={maximumDate}
+          value={selectedDate}
+          onChange={onDateTimeChange}
+        />
 
-      <TouchableOpacity onPress={onPressSchedule} style={styles.scheduleButton}>
-        <Text style={styles.scheduleButtonText}>Schedule</Text>
-      </TouchableOpacity>
+        <DismissibleModal
+          visible={showLoginPopup}
+          okayBtnLabel={UIText[language].login}
+          cancelBtnLabel={UIText[language].cancel}
+          onPressOk={onPressLogin}
+          dismiss={() => setShowLoginPopup(false)}
+          style={{ width: '80%' }}
+          includeCancelBtn>
+          <CustomIcon
+            name="ios-log-in"
+            iconFamily={IONICONS}
+            size={35}
+            color={Colors.tintColor}
+            style={styles.popupIcon}
+          />
+
+          <View style={styles.popupLabelContainer}>
+            <Text style={styles.popupLabel}>{UIText[language].loginFirst}</Text>
+          </View>
+        </DismissibleModal>
+
+        {messageDisplayer}
+
+        <TouchableOpacity onPress={onPressSchedule} style={styles.scheduleButton}>
+          <Text style={styles.scheduleButtonText}>Schedule</Text>
+        </TouchableOpacity>
+      </ScrollView>
     </View>
   );
 };
@@ -581,8 +625,18 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#ffffff',
-    paddingHorizontal: 25,
-    paddingTop: 40,
+    //paddingHorizontal: 25,
+    //paddingTop: 40,
+    alignItems: 'center',
+  },
+  scheduleAppointmentLayoutContainer: {
+    //flex: 1,
+    width: '100%',
+    backgroundColor: "#f9f8f8",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: 8,
   },
   drawerIconTouch: {
     marginRight: 25,
@@ -631,6 +685,7 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     shadowRadius: 3,
     flexDirection: 'row',
+    marginBottom: 11
   },
   scheduleButtonText: {
     color: '#ffcea2',

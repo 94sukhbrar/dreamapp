@@ -41,7 +41,7 @@ export default class SignUpConsultantScreen3 extends Component {
               </Text>
             ) : (
               <Text style={styles.informationMessage}>
-                Uspesna registracija!
+                Registration successful!
               </Text>
             )}
 

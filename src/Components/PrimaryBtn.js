@@ -9,7 +9,7 @@ import {
 import PropTypes from 'prop-types';
 import Layout from '../Constants/Layout';
 import Colors from '../Constants/Colors';
-import {IONICONS, FONT_AWESOME} from '../Constants/IconFamilies';
+import { IONICONS, FONT_AWESOME } from '../Constants/IconFamilies';
 import CustomIcon from './CustomIcon';
 
 const iconSize = 25;
@@ -24,35 +24,35 @@ const PrimaryBtn = ({
   style,
   disabled,
 }) => (
-  <TouchableOpacity
-    style={[
-      styles.container,
-      {backgroundColor: disabled ? Colors.disabledTintColor : Colors.tintColor},
-      style,
-    ]}
-    onPress={onPress}
-    onLongPress={onLongPress}
-    disabled={disabled || loading}>
-    {iconName != undefined && (
-      <CustomIcon
-        iconFamily={iconFamily}
-        name={iconName}
+    <TouchableOpacity
+      style={[
+        styles.container,
+        { backgroundColor: disabled ? "#f9f8f8" : Colors.tintColor },
+        style,
+      ]}
+      onPress={onPress}
+      onLongPress={onLongPress}
+      disabled={disabled || loading}>
+      {iconName != undefined && (
+        <CustomIcon
+          iconFamily={iconFamily}
+          name={iconName}
+          color={'#fff'}
+          size={iconSize}
+          style={styles.icon}
+        />
+      )}
+
+      <Text style={styles.label}>{label}</Text>
+
+      <ActivityIndicator
+        animating={loading}
+        size="small"
         color={'#fff'}
-        size={iconSize}
-        style={styles.icon}
+        style={styles.loadingIndicator}
       />
-    )}
-
-    <Text style={styles.label}>{label}</Text>
-
-    <ActivityIndicator
-      animating={loading}
-      size="small"
-      color={'#fff'}
-      style={styles.loadingIndicator}
-    />
-  </TouchableOpacity>
-);
+    </TouchableOpacity>
+  );
 
 const styles = StyleSheet.create({
   container: {

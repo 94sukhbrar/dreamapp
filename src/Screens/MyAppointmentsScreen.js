@@ -1,5 +1,7 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable eqeqeq */
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   StyleSheet,
   View,
@@ -9,12 +11,12 @@ import {
   RefreshControl,
 } from 'react-native';
 import PropTypes from 'prop-types';
-import {shallowEqual, useSelector, useDispatch} from 'react-redux';
+import { shallowEqual, useSelector, useDispatch } from 'react-redux';
 import Colors from '../Constants/Colors';
-import {USER} from '../Constants/UserTypes';
+import { USER } from '../Constants/UserTypes';
 import Header from '../Components/Header';
 import UIText from '../Constants/UIText';
-import {OUTGOING} from '../Constants/CallDirections';
+import { OUTGOING } from '../Constants/CallDirections';
 import {
   updateAppointmentStatus,
   updateUserData,
@@ -34,16 +36,16 @@ import {
   fetchAppointments,
   setUpcomingAppointmentDates,
 } from '../Redux/Actions';
-import {areArraysEqual, getUpcomingAppointmentDates} from '../Utilities/Tools';
-import {reportProblem} from '../Utilities/ErrorHandlers';
+import { areArraysEqual, getUpcomingAppointmentDates } from '../Utilities/Tools';
+import { reportProblem } from '../Utilities/ErrorHandlers';
 import SegmentedControl from '@react-native-community/segmented-control';
 import AppointmentsContainer from '../Components/AppointmentsContainer';
 import DismissibleModal from '../Components/DismissibleModal';
 import CustomIcon from '../Components/CustomIcon';
-import {IONICONS} from '../Constants/IconFamilies';
-import {chargeConsultationPrice} from '../Networking/Https';
+import { IONICONS } from '../Constants/IconFamilies';
+import { chargeConsultationPrice } from '../Networking/Https';
 import useMessageDisplayer from '../Hooks/useMessageDisplayer';
-import {WAITING_PEER} from '../Constants/CallStatus';
+import { WAITING_PEER } from '../Constants/CallStatus';
 
 const scrollViewVerticalPadding = 20;
 
@@ -59,7 +61,7 @@ const scrollViewHeight =
 
 const segmentedControlStatusValues = [REQUESTED, ACCEPTED, COMPLETED];
 
-const MyAppointmentsScreen = ({navigation}) => {
+const MyAppointmentsScreen = ({ navigation }) => {
   const {
     uid,
     photoUrl,
@@ -101,6 +103,10 @@ const MyAppointmentsScreen = ({navigation}) => {
   const [messageDisplayer, displayMessage] = useMessageDisplayer();
 
   useEffect(() => {
+    console.log('didmount pocetka!');
+  }, []);
+
+  useEffect(() => {
     if (!loggedIn) {
       return;
     }
@@ -136,7 +142,7 @@ const MyAppointmentsScreen = ({navigation}) => {
   };
 
   const removeDeclinedAppointments = () => {
-    const updatedAppointments = {...appointments};
+    const updatedAppointments = { ...appointments };
     let appointmentsObjectIsModified = false;
 
     for (const appointmentId in updatedAppointments) {
@@ -164,7 +170,7 @@ const MyAppointmentsScreen = ({navigation}) => {
       return;
     }
 
-    const {parties} = appointments[appointmentId];
+    const { parties } = appointments[appointmentId];
 
     const peerUid =
       userType == USER ? parties.consultant.uid : parties.user.uid;
@@ -210,7 +216,7 @@ const MyAppointmentsScreen = ({navigation}) => {
     }
 
     updateAppointmentStatus(appointmentId, status);
-    const updatedAppointment = {...appointment, status: status};
+    const updatedAppointment = { ...appointment, status: status };
 
     const updatedAppointmentsObject = {
       ...appointments,
@@ -224,20 +230,20 @@ const MyAppointmentsScreen = ({navigation}) => {
     setCharging(true);
 
     const {
-      parties: {user, consultant},
+      parties: { user, consultant },
     } = appointments[selectedAppointmentId];
 
     try {
-      const response = await chargeConsultationPrice(
+      /* const response = await chargeConsultationPrice(
         selectedAppointmentId,
         user.uid,
         consultant.uid,
-      );
-      const charge = response.data;
+      ); */
+      //const charge = response.data;
       displayMessage(UIText[language].amountChargedSuccessfully);
       setShowChargingModal(false);
       respondToAppointment(selectedAppointmentId, true, true);
-      console.log('onPressCharge -> charge', charge);
+      //console.log('onPressCharge -> charge', charge);
     } catch (error) {
       console.log(
         'onPressCharge -> error.response.status',
@@ -287,7 +293,7 @@ const MyAppointmentsScreen = ({navigation}) => {
 
   return (
     <View style={styles.container}>
-     <StatusBar translucent barStyle="dark-content" backgroundColor="#fff" />
+      <StatusBar translucent barStyle="dark-content" backgroundColor="#fff" />
 
       <Header
         navigation={navigation}
@@ -350,7 +356,7 @@ const MyAppointmentsScreen = ({navigation}) => {
         />
 
         <View style={styles.modalLabelContainer}>
-          <Text style={[styles.modalLabel, {color: chargeModalLabelColor}]}>
+          <Text style={[styles.modalLabel, { color: chargeModalLabelColor }]}>
             {chargeModalLabel}
           </Text>
         </View>
@@ -404,7 +410,7 @@ const styles = StyleSheet.create({
     width: '100%',
     paddingHorizontal: 8,
     alignItems: 'center',
-    marginTop: 3,
+    //marginTop: 3,
     marginTop: 15,
     marginBottom: 20,
   },

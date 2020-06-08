@@ -146,8 +146,8 @@ const SignUpScreen = ({ navigation, route }) => {
 
       setLoading(false);
 
-      //navigation.navigate('SignUpSuccessfully', {user: userType});
-      userType == USER ? navigateToApp() : showConsultantActivationAlert(uid);
+      navigation.navigate('SignUpSuccessfully', {user: userType});
+      //userType == USER ? navigateToApp() : showConsultantActivationAlert(uid);
     } catch (error) {
       handleSignupError(error);
       setLoading(false);

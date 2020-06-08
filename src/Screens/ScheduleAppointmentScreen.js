@@ -1,7 +1,7 @@
 /* eslint-disable no-shadow */
 /* eslint-disable eqeqeq */
 /* eslint-disable no-unused-vars */
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   View,
   StyleSheet,
@@ -11,9 +11,11 @@ import {
   ScrollView,
   RefreshControl,
   FlatList,
+  TouchableOpacity,
+  Image
 } from 'react-native';
 import PropTypes from 'prop-types';
-import {shallowEqual, useSelector, useDispatch} from 'react-redux';
+import { shallowEqual, useSelector, useDispatch } from 'react-redux';
 import Colors from '../Constants/Colors';
 import Header from '../Components/Header';
 import UIText from '../Constants/UIText';
@@ -38,8 +40,8 @@ import {
 import Layout from '../Constants/Layout';
 import TabBarScreenStyles from '../SharedStyles/TabBarScreenStyles';
 import DateAndTimePicker from '../Components/DateAndTimePicker';
-import {IONICONS} from '../Constants/IconFamilies';
-import {fetchConsultants} from '../Redux/Actions';
+import { IONICONS } from '../Constants/IconFamilies';
+import { fetchConsultants } from '../Redux/Actions';
 import CustomIcon from '../Components/CustomIcon';
 import DismissibleModal from '../Components/DismissibleModal';
 import localNotificationDefaultConfig from '../Constants/LocalNotificationDefaultConfig';
@@ -59,7 +61,7 @@ const defaultAppointmentTime = {
   localMinute: currentDate.getMinutes(),
 };
 
-const ScheduleAppointmentScreen = ({navigation}) => {
+const ScheduleAppointmentScreen = ({ navigation }) => {
   const {
     language,
     loggedIn,
@@ -102,6 +104,7 @@ const ScheduleAppointmentScreen = ({navigation}) => {
   const [messageDisplayer, displayMessage] = useMessageDisplayer();
 
   useEffect(() => {
+    console.log("did mount pocetna! ");
     dispatch(fetchConsultants());
   }, [dispatch]);
 
@@ -364,10 +367,10 @@ const ScheduleAppointmentScreen = ({navigation}) => {
       return;
     }
 
-   /*  if (!selectedConsultant) {
-      displayMessage(UIText[language].selectConsultantFirst);
-      return;
-    } */
+    /*  if (!selectedConsultant) {
+       displayMessage(UIText[language].selectConsultantFirst);
+       return;
+     } */
 
     if (!appointmentDate || !appointmentTime) {
       displayMessage(UIText[language].selectTimeAndDateFirst);
@@ -495,7 +498,8 @@ const ScheduleAppointmentScreen = ({navigation}) => {
             colors={['#0077bc']}
           />
         }>
-       {/*  <Text style={[styles.selectConsultantTitle, {color: Colors.textColor}]}>
+
+        {/*  <Text style={[styles.selectConsultantTitle, {color: Colors.textColor}]}>
           {UIText[language].selectConsultant}
         </Text> */}
 
@@ -504,13 +508,32 @@ const ScheduleAppointmentScreen = ({navigation}) => {
           data={consultants}
           renderItem={({item}) => <View></View>}
         /> */}
+
+
+        <View style={styles.aboutMeDialog}>
+          <Image
+            style={styles.aboutMeIcon}
+            source={require("../../assets/images/aboutMeIcon.png")} />
+          <View style={styles.infoAboutMeDialog}>
+            <Text style={styles.aboutMeText}>Over 30 interpreters with verified experience in the field of Dream interpretation</Text>
+            <TouchableOpacity
+              onPress={() => navigation.navigate("AboutUsScreen")}
+              style={styles.aboutMeButton}>
+              <Text style={styles.aboutMeButtonText}>Read me</Text>
+              {/* <Ionicons name="ios-arrow-round-forward" size={30} color="#ffffff" /> */}
+            </TouchableOpacity>
+          </View>
+        </View>
+
+
+
         {!loadingConsultants && Object.keys(consultants).map(consultantsMapper)}
         {/* <ConsultantsHorizontalPicker>
           {!loadingConsultants &&
             Object.keys(consultants).map(consultantsMapper)}
         </ConsultantsHorizontalPicker> */}
 
-       {/*  <IconInputField
+        {/*  <IconInputField
           iconName="md-calendar"
           iconFamily={IONICONS}
           title={UIText[language].selectDate}
@@ -561,7 +584,7 @@ const ScheduleAppointmentScreen = ({navigation}) => {
         cancelBtnLabel={UIText[language].cancel}
         onPressOk={onPressLogin}
         dismiss={() => setShowLoginPopup(false)}
-        style={{width: '80%'}}
+        style={{ width: '80%' }}
         includeCancelBtn>
         <CustomIcon
           name="ios-log-in"
@@ -603,6 +626,50 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     marginTop: 10,
   },
+  aboutMeDialog: {
+    width: "100%",
+    height: 100,
+    backgroundColor: "#f9f8f8",
+    borderRadius: 5,
+    shadowColor: "#000000",
+    shadowOpacity: 0.25,
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 4,
+    flexDirection: "row",
+    marginTop: 7
+  },
+  aboutMeIcon: {
+    width: 65,
+    height: 60,
+    marginTop: 10,
+    marginLeft: 5
+  },
+  infoAboutMeDialog: {
+    flex: 1,
+    marginLeft: 18,
+    marginRight: 10,
+    justifyContent: "center"
+  },
+  aboutMeText: {
+    fontSize: 12,
+    color: "#425c5a"
+  },
+  aboutMeButton: {
+    width: "100%",
+    height: 40,
+    backgroundColor: "#425c5a",
+    borderRadius: 5,
+    marginTop: 5,
+    justifyContent: "center",
+    alignItems: "center",
+    flexDirection: "row"
+  },
+  aboutMeButtonText: {
+    color: "#ffffff",
+    fontSize: 12,
+    marginRight: 20
+  },
+
   popupLabelContainer: {
     width: '100%',
     paddingHorizontal: 8,

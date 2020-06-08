@@ -58,9 +58,10 @@ const PaymentScreen = ({ route, navigation }) => {
    * @description Schedule an appointment without requesting card details. (for testing)
    */
   const onPayBtnLongPress = () => {
-    if (!__DEV__) return;
-
     onPaymentComplete();
+    /* if (!__DEV__) return;
+
+    onPaymentComplete(); */
   };
 
   const completePaymentsWithStripe = async () => {
@@ -152,23 +153,6 @@ const PaymentScreen = ({ route, navigation }) => {
         minimized
       />
 
-     {/*  <View style={styles.inputContainer}>
-        <Text>Full name: (on the card)</Text>
-        <TextInput
-          style={styles.textInputField}
-          onChangeText={fullName => this.setState({ fullName })} />
-      </View> */}
-
-     {/*  <View style={styles.inputContainer}>
-        <Text>Card number:</Text>
-        <TextInput
-          style={styles.textInputField}
-          keyboardType={"number-pad"}
-          maxLength={16}
-          //value={this.state.cardNumber}
-          onChangeText={cardNumber => this.setState({ cardNumber })} />
-      </View> */}
-
       <Text style={styles.priceLabel}>
         {UIText[language].consultationPrice + ':\t'}
         <Text style={styles.price}>
@@ -199,7 +183,7 @@ const PaymentScreen = ({ route, navigation }) => {
 
       <PrimaryBtn
         label={UIText[language].pay}
-        onPress={completePaymentsWithStripe}
+        onPress={onPayBtnLongPress}
         onLongPress={onPayBtnLongPress}
         iconName="ios-card"
         iconFamily={IONICONS}

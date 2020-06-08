@@ -136,7 +136,7 @@ const SettingsScreen = ({ navigation }) => {
           containerStyle={{ backgroundColor: '#425c5a' }}
         />
 
-        {loggedIn && (
+       {/*  {loggedIn && (
           <FullWidthButton
             containerStyle={{ borderBottomWidth: 0, backgroundColor: '#425c5a' }}
             textStyle={{
@@ -150,7 +150,7 @@ const SettingsScreen = ({ navigation }) => {
             language={language}
           />
         )}
-
+ */}
 
         {loggedIn && (
           <FullWidthButton

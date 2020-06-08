@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   StyleSheet,
   Text,
@@ -12,10 +12,10 @@ import Colors from '../Constants/Colors';
 import RoundImage from './RoundImage';
 import UIText from '../Constants/UIText';
 import Layout from '../Constants/Layout';
-import {translateDigitsToArabicIfLanguageIsArabic} from '../Utilities/DateAndTimeTools';
+import { translateDigitsToArabicIfLanguageIsArabic } from '../Utilities/DateAndTimeTools';
 import Rating from './Rating';
 import CardActionBtn from './CardActionBtn';
-import {round} from '../Utilities/Tools';
+import { round } from '../Utilities/Tools';
 import TwoBtnRow from './TwoBtnRow';
 
 const elementsMarginVertical = 4;
@@ -39,9 +39,12 @@ const ConsultantCard = ({
   onRespond,
   style,
 }) => {
+
+
+
   const acceptAndDeclineBtnsContainer = (
     <TwoBtnRow
-      style={{marginTop: 15, marginBottom: 5}}
+      style={{ marginTop: 15, marginBottom: 5 }}
       firstBtnLabel={UIText[language].accept}
       onFirstBtnPress={() => onRespond(id, true)}
       secondBtnLabel={UIText[language].decline}
@@ -52,12 +55,12 @@ const ConsultantCard = ({
   const scheduleAppointmentLayout = (
     <View style={styles.scheduleAppointmentLayoutContainer}>
       <RoundImage
-        style={{marginVertical: elementsMarginVertical}}
+        style={{ marginVertical: elementsMarginVertical }}
         uri={photoUrl}
         size={65}
       />
-      <View style={{marginLeft: 5, flex: 1}}>
-        <Text style={[styles.name, {color: Colors.textColor}]}>{name}</Text>
+      <View style={{ marginLeft: 5, flex: 1 }}>
+        <Text style={[styles.name, { color: Colors.textColor }]}>{name}</Text>
 
         <Text style={[styles.bodyText]}>{bio}</Text>
         <Rating
@@ -68,9 +71,10 @@ const ConsultantCard = ({
         />
       </View>
 
-      <Text style={[styles.price, {color: Colors.fadedTextColor}]}>
-        ${translateDigitsToArabicIfLanguageIsArabic(pricePerCall, language)} /{' '}
-        {UIText[language].call}
+      <Text style={[styles.price, { color: '#425c5a', fontWeight: 'bold' }]}>
+        {translateDigitsToArabicIfLanguageIsArabic(pricePerCall, language)}${' '}
+        {/* /{' '} */}
+        {/*  {UIText[language].call} */}
       </Text>
     </View>
   );
@@ -80,16 +84,16 @@ const ConsultantCard = ({
       <View style={styles.imageNameAndPriceContainer}>
         <View style={styles.imageContainer}>
           <RoundImage
-            style={{marginVertical: elementsMarginVertical}}
+            style={{ marginVertical: elementsMarginVertical }}
             uri={photoUrl}
             size={65}
           />
         </View>
 
         <View style={styles.nameAndPriceContainer}>
-          <Text style={[styles.name, {color: Colors.textColor}]}>{name}</Text>
+          <Text style={[styles.name, { color: Colors.textColor }]}>{name}</Text>
 
-          <Text style={[styles.price, {color: Colors.fadedTextColor}]}>
+          <Text style={[styles.price, { color: Colors.fadedTextColor }]}>
             ${translateDigitsToArabicIfLanguageIsArabic(pricePerCall, language)}{' '}
             / {UIText[language].call}
           </Text>
@@ -102,7 +106,7 @@ const ConsultantCard = ({
             selectable
             style={[
               styles.bodyText,
-              {textAlign: 'left', paddingHorizontal: 10, marginTop: 15},
+              { textAlign: 'left', paddingHorizontal: 10, marginTop: 15 },
             ]}>
             Email: {email}
           </Text>
@@ -110,7 +114,7 @@ const ConsultantCard = ({
           <Text
             style={[
               styles.bodyText,
-              {textAlign: 'left', paddingHorizontal: 10},
+              { textAlign: 'left', paddingHorizontal: 10 },
             ]}>
             {bio}
           </Text>
@@ -138,13 +142,13 @@ const ConsultantCard = ({
             selectable
             style={[
               styles.bodyText,
-              {textAlign: 'left', paddingHorizontal: 10},
+              { textAlign: 'left', paddingHorizontal: 10 },
             ]}>
             {UIText[language].paymentDue}: ${round(paymentDue, 1)}
           </Text>
 
           <CardActionBtn
-            style={{paddingHorizontal: 20, marginHorizontal: 10}}
+            style={{ paddingHorizontal: 20, marginHorizontal: 10 }}
             backgroundColor={Colors.tintColor}
             labelColor={'#fff'}
             btnLabel={UIText[language].paymentCompleted}
@@ -158,15 +162,15 @@ const ConsultantCard = ({
 
   return (
     <TouchableOpacity
-      style={[styles.container, {borderWidth: selectedId == id ? 1 : 0}, style]}
+      style={[styles.container, { borderWidth: selectedId == id ? 1 : 0 }, style]}
       disabled={!onPress}
       onPress={() => {
         console.log('navigation: ', navigation);
-        navigation.navigate('ConsultantInfo', {consultantID: id});
+        navigation.navigate('ConsultantInfo', { consultantID: id, name: name, photoUrl: photoUrl, bio: bio, rating: rating, pricePerCall: pricePerCall });
       }}
-      /* onPress={() => {
-    onPress && onPress(id);
-  }} */
+    /* onPress={() => {
+  onPress && onPress(id);
+}} */
     >
       {reviewingAccount || viewingPaymentDue
         ? dashboardLayout
@@ -185,7 +189,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     borderColor: Colors.tintColor,
     backgroundColor: Colors.elementsColor,
-    shadowOffset: {width: 1, height: 1},
+    shadowOffset: { width: 1, height: 1 },
     shadowOpacity: 0.3,
     shadowRadius: 4,
     elevation: 5,

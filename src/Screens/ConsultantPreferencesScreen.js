@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { 
+import {
   StyleSheet,
   View,
   Text,
@@ -223,12 +223,12 @@ const ConsultantPreferencesScreen = ({ navigation }) => {
   };
 
   const animate = (drivenValue, targetValue, duration) => {
-		return Animated.timing(drivenValue, {
-			toValue: targetValue,
-			duration,
-			useNativeDriver: true,
-		});
-	};
+    return Animated.timing(drivenValue, {
+      toValue: targetValue,
+      duration,
+      useNativeDriver: true,
+    });
+  };
 
   const numberOfRemainingBioCharacters = translateDigitsToArabicIfLanguageIsArabic(
     maximumNumberOfCharactersInBio - unAppliedBio.length,
@@ -266,7 +266,7 @@ const ConsultantPreferencesScreen = ({ navigation }) => {
             {
               width: '100%',
               alignItems: 'center',
-              transform: [{translateY: YTranslation}],
+              transform: [{ translateY: YTranslation }],
             },
           ]}>
           <IconInputField
@@ -275,7 +275,7 @@ const ConsultantPreferencesScreen = ({ navigation }) => {
             textColor={unAppliedBio == bio ? Colors.placeHolderColor : Colors.tintColor}
             value={unAppliedBio}
             onChangeText={onChangeBio}
-            style={{height: 80}}
+            style={{ height: 80 }}
             textInputWidth='100%'
             onFocus={avoidKeyboard}
             onBlur={avoidKeyboard}
@@ -294,16 +294,16 @@ const ConsultantPreferencesScreen = ({ navigation }) => {
           <Text style={styles.fieldTitle}>{UIText[language].available}</Text>
 
           <View style={styles.availableTimeFieldsContainer}>
-            <View style={{flex: 1}}>
+            <View style={{ flex: 1, marginRight: 5}}>
               <IconInputField
                 title={UIText[language].from}
                 textColor={
-                  unAppliedTimeAvailableFrom == timeAvailable.from 
-                    ? Colors.placeHolderColor 
+                  unAppliedTimeAvailableFrom == timeAvailable.from
+                    ? Colors.placeHolderColor
                     : Colors.tintColor
                 }
                 placeholder={convertTimeToText(
-                  {localHour: convertUTCHourToLocal(unAppliedTimeAvailableFrom)},
+                  { localHour: convertUTCHourToLocal(unAppliedTimeAvailableFrom) },
                   language,
                 )}
                 onPress={onPressSelectAvailableFrom}
@@ -311,7 +311,7 @@ const ConsultantPreferencesScreen = ({ navigation }) => {
               />
             </View>
 
-            <View style={{flex: 1}}>
+            <View style={{ flex: 1 }}>
               <IconInputField
                 title={UIText[language].to}
                 textColor={
@@ -320,7 +320,7 @@ const ConsultantPreferencesScreen = ({ navigation }) => {
                     : Colors.tintColor
                 }
                 placeholder={convertTimeToText(
-                  {localHour: convertUTCHourToLocal(unAppliedTimeAvailableTo)},
+                  { localHour: convertUTCHourToLocal(unAppliedTimeAvailableTo) },
                   language,
                 )}
                 onPress={onPressSelectAvailableTo}
@@ -379,7 +379,7 @@ const ConsultantPreferencesScreen = ({ navigation }) => {
         />
       )}
 
-      { messageDisplayer }
+      {messageDisplayer}
     </View>
   )
 }
@@ -388,11 +388,13 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: 'center',
+    paddingHorizontal: 5,
     backgroundColor: Colors.backgroundColor,
   },
   scrollViewContainer: {
     alignItems: 'center',
     paddingBottom: 20,
+    paddingHorizontal: 10
   },
   fieldTitle: {
     fontSize: 23,
